@@ -7,7 +7,7 @@
 
 rule token = parse
   [' ' '\t' '\n'] {token lexbuf}
-  | eof { raise Eof }
+  | eof { EOF}
   | "ACTIVE"   {ACTIVE}
   | "AVAILABLE" {AVAILABLE}
   | "ERROR" {ERROR}
@@ -27,7 +27,6 @@ rule token = parse
   | 'U' {UNTIL}
   | ('X'| 'o') {NEXT}
   | 'W' {WEAK}
-  | "xor" {XOR}
   | '!'  {NOT}
   | '=' {EQ}
   | "!="  {NEQ}

@@ -1,4 +1,4 @@
-type binary_op = And | Or | Imp | Xor
+type binary_op = And | Or | Imp
 
 type unary_op = Not
 
@@ -22,4 +22,4 @@ type boolForm = Bf1 of atomicForm
 
 type tempForm = Tf1 of boolForm | Tf2 of unary_temp_op * tempForm
 
-type formula = Form of tempForm
+type formula = Form of tempForm 

@@ -21,7 +21,6 @@
 %token LIVE
 %token ACTIVE
 %token AVAILABLE
-%token XOR
 %token NOT
 %token NEQ
 %token EQ
@@ -108,7 +107,6 @@ comp:
 binary_op :
   | OR { Or }
   | AND { And }
-  | XOR {Xor}
   | IMP {Imp}
 
 binary_temp_op :

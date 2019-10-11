@@ -33,7 +33,6 @@ and  eval_binary_op b1 o b2 =
   And -> (eval_boolForm b1)^" and "^(eval_boolForm b2)
   | Or -> (eval_boolForm b1)^" or "^(eval_boolForm b2)
   | Imp -> "if "^(eval_boolForm b1)^" then "^(eval_boolForm b2)
-  | Xor -> ""
 
 and eval_unary_temp_op_b o b=
   match o with
@@ -97,4 +96,4 @@ and eval_tempForm t =
 
 let eval_formula f = 
   match f with
-  Form x -> print_string (eval_tempForm x)
+  Form x -> eval_tempForm x
