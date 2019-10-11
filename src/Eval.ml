@@ -63,6 +63,11 @@ and eval_unary_temp_op_b o b=
   | EF ->  "Some path and Some future state satisfies "^(eval_tempForm t)
   | EG ->  "Some path and every future state satisfies "^(eval_tempForm t)
 
+  and eval_atomic f =
+  match f with
+  Af1(x) -> (eval_state_constant x)^(!s)
+  |Af2(v1,c,v2) -> (eval_valueId v1)^" "^(!s)^" "^(eval_valueId v2)
+
 and eval_binary_temp_op b1 o b2=
   match o with
   R -> (eval_boolForm b1)^" is satisfied until and including the point where "^(eval_boolForm b2)^
@@ -78,21 +83,18 @@ and eval_binary_temp_op b1 o b2=
 and eval_boolForm b = 
   match b with
    Bf1(a) -> eval_atomic a^(!s)
-  | Bf2(u,b) -> eval_unary_op(u,b)^(!s)
-  | Bf3(b1,o,b2) -> eval_binary_op_b(b1,o,b2)^(!s)
-  | Bf4(o,b) -> eval_unary_temp_op(o,b) ^(!s)
-  | Bf5(b1,o,b2) -> eval_binary_temp_op(b1,o,b2)^(!s)
+  | Bf2(o,b1) -> (eval_unary_op o b1)^(!s)
+  | Bf3(b1,o,b2) -> (eval_binary_op b1 o b2)^(!s)
+  | Bf4(o,b) -> (eval_unary_temp_op_b o b) ^(!s)
+  | Bf5(b1,o,b2) -> (eval_binary_temp_op b1 o b2)^(!s)
 
-and eval_atomic f =
-  match f with
-  Af1(x) -> (eval_state_constant x)^(!s)
-  |Af2(v1,c,v2) -> (eval_valueId v1)^" "^(!s)^" "^(eval_valueId v2)
+
   
 and eval_tempForm t = 
   match t with
-  Tf1(b) -> eval_tempForm(b) ^ (!s)
-  | Tf2(o,form) -> eval_unary_temp_op_t(o,form)^(!s) 
+  Tf1(b) -> (eval_boolForm b) ^ (!s)
+  | Tf2(o,form) -> (eval_unary_temp_op_t o form)^(!s) 
 
 let eval_formula f = 
   match f with
-  Form x -> eval_temp x
+  Form x -> print_string (eval_tempForm x)

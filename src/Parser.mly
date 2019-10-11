@@ -32,11 +32,10 @@
 %token OR
 %token AND
 %token IMP
-(*
 %token LPAR
 %token RPAR
 %token LBOX
-%token RBOX *)
+%token RBOX
 %token EOF
 
 (*
@@ -74,14 +73,14 @@ parse_formula:
 
 tempForm:
   | boolForm {Tf1($1)}
-  | unary_temp_op tempForm {Tf2($1,$2)}
+  | unary_temp_op LPAR tempForm RPAR {Tf2($1,$3)}
 
 boolForm:
   | atomicForm {Bf1($1) }
-  | unary_op boolForm {Bf2($1,$2)}
+  | LPAR unary_op boolForm RPAR {Bf2($2,$3)}
   | boolForm binary_op boolForm {Bf3($1,$2,$3)}
-  | unary_temp_op boolForm {Bf4($1,$2)}
-  | boolForm binary_temp_op boolForm {Bf5($1,$2,$3)}
+  | unary_temp_op LPAR boolForm RPAR {Bf4($1,$3)}
+  | LPAR boolForm binary_temp_op boolForm RPAR {Bf5($2,$3,$4)}
 
 atomicForm:
   | state_constant {Af1($1)}

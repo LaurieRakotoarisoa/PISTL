@@ -1,5 +1,14 @@
 open Formula
 
-let formula_of_string s = Parser.parse_formula Lexer.token(Lexing.from_string s)
+let str = "ERROR"
 
-let _ = Printf.printf(Eval.eval_formula (formula_of_string "AG((load_data=Unloaded & build_window_button=enabled) -> AF(InfoWin=open)) "))
+let _ =
+  try
+    let oc = open_in Sys.argv.(1) in 
+    let lexbuf = Lexing.from_channel oc in
+    let f = Parser.parse_formula Lexer.token lexbuf in
+    Eval.eval_formula f
+  with Lexer.Eof ->
+   exit 0
+        
+     

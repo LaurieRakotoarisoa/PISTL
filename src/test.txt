@@ -1,0 +1,1 @@
+AG(AVAILABLE -> F(ACTIVE))

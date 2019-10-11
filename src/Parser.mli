@@ -9,14 +9,18 @@ type token =
   | S_RELEASE
   | STE
   | ST
+  | RPAR
   | RELEASE
+  | RBOX
   | OR
   | NOT
   | NEXT
   | NEQ
   | LTE
   | LT
+  | LPAR
   | LIVE
+  | LBOX
   | IMP
   | GLOBALLY
   | FORALL

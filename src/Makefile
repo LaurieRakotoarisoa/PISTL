@@ -31,3 +31,13 @@ Lexer.cmx: Parser.cmx
 
 %.cmx: %.ml
 	$(OCCOPT) $(OCC_FLAGS) $<
+
+clean:
+	rm -f *.cmo
+	rm -f *.cmi
+	rm -f a.out
+	rm -f Lexer.ml
+	rm -f Parser.mli
+	rm -f Parser.ml
+	rm -f Parser.automaton
+	rm -f Parser.conflicts

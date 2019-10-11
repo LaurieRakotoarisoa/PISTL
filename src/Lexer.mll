@@ -7,6 +7,7 @@
 
 rule token = parse
   [' ' '\t' '\n'] {token lexbuf}
+  | eof { raise Eof }
   | "ACTIVE"   {ACTIVE}
   | "AVAILABLE" {AVAILABLE}
   | "ERROR" {ERROR}
@@ -37,7 +38,10 @@ rule token = parse
   | '|' {OR}
   | '&' {AND}
   | "->" {IMP}
+  | '(' {LPAR}
+  | ')' {RPAR}
+  | '['   { LBOX }
+  | ']'   { RBOX }
   | (['a'-'z''A'-'Z']+)'.'(['a'-'z''A'-'Z']['A'-'Z' '0'-'9']*) as x {COMMAND(x)}
   | ['a'-'z'] (['a'-'z' 'A'-'Z' '0'-'9']*) as x {VAR(x)}
   | ['A'-'Z'](['A'-'Z' '0'-'9']*) as x {CONST(x)}
-  | eof { EOF }
