@@ -20,6 +20,6 @@ type boolForm = Bf1 of atomicForm
                 | Bf4 of unary_temp_op * boolForm 
                 | Bf5 of boolForm * binary_temp_op * boolForm
 
-type tempForm = Tf1 of boolForm | Tf2 of temp_op * tempForm
+type tempForm = Tf1 of boolForm | Tf2 of unary_temp_op * tempForm
 
 type formula = Form of tempForm

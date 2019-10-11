@@ -1,0 +1,962 @@
+State 0:
+parse_formula' -> . parse_formula [ # ]
+-- On VAR shift to state 1
+-- On NOT shift to state 2
+-- On NEXT shift to state 3
+-- On LIVE shift to state 4
+-- On GLOBALLY shift to state 5
+-- On FORALL shift to state 6
+-- On FINALLY shift to state 7
+-- On EXISTS shift to state 8
+-- On EX shift to state 9
+-- On ERROR shift to state 10
+-- On EG shift to state 11
+-- On EF shift to state 12
+-- On CONST shift to state 13
+-- On COMMAND shift to state 14
+-- On AX shift to state 15
+-- On AVAILABLE shift to state 16
+-- On AG shift to state 17
+-- On AF shift to state 18
+-- On ACTIVE shift to state 19
+-- On valueId shift to state 20
+-- On unary_temp_op shift to state 29
+-- On unary_op shift to state 30
+-- On tempForm shift to state 50
+-- On state_constant shift to state 32
+-- On parse_formula shift to state 52
+-- On boolForm shift to state 53
+-- On atomicForm shift to state 46
+
+State 1:
+valueId -> VAR . [ XOR WEAK UNTIL S_RELEASE STE ST RELEASE OR NEQ LTE LT IMP EQ EOF AND ]
+-- On XOR reduce production valueId -> VAR 
+-- On WEAK reduce production valueId -> VAR 
+-- On UNTIL reduce production valueId -> VAR 
+-- On S_RELEASE reduce production valueId -> VAR 
+-- On STE reduce production valueId -> VAR 
+-- On ST reduce production valueId -> VAR 
+-- On RELEASE reduce production valueId -> VAR 
+-- On OR reduce production valueId -> VAR 
+-- On NEQ reduce production valueId -> VAR 
+-- On LTE reduce production valueId -> VAR 
+-- On LT reduce production valueId -> VAR 
+-- On IMP reduce production valueId -> VAR 
+-- On EQ reduce production valueId -> VAR 
+-- On EOF reduce production valueId -> VAR 
+-- On AND reduce production valueId -> VAR 
+
+State 2:
+unary_op -> NOT . [ VAR NOT NEXT LIVE GLOBALLY FORALL FINALLY EXISTS EX ERROR EG EF CONST COMMAND AX AVAILABLE AG AF ACTIVE ]
+-- On VAR reduce production unary_op -> NOT 
+-- On NOT reduce production unary_op -> NOT 
+-- On NEXT reduce production unary_op -> NOT 
+-- On LIVE reduce production unary_op -> NOT 
+-- On GLOBALLY reduce production unary_op -> NOT 
+-- On FORALL reduce production unary_op -> NOT 
+-- On FINALLY reduce production unary_op -> NOT 
+-- On EXISTS reduce production unary_op -> NOT 
+-- On EX reduce production unary_op -> NOT 
+-- On ERROR reduce production unary_op -> NOT 
+-- On EG reduce production unary_op -> NOT 
+-- On EF reduce production unary_op -> NOT 
+-- On CONST reduce production unary_op -> NOT 
+-- On COMMAND reduce production unary_op -> NOT 
+-- On AX reduce production unary_op -> NOT 
+-- On AVAILABLE reduce production unary_op -> NOT 
+-- On AG reduce production unary_op -> NOT 
+-- On AF reduce production unary_op -> NOT 
+-- On ACTIVE reduce production unary_op -> NOT 
+
+State 3:
+unary_temp_op -> NEXT . [ VAR NOT NEXT LIVE GLOBALLY FORALL FINALLY EXISTS EX ERROR EG EF CONST COMMAND AX AVAILABLE AG AF ACTIVE ]
+-- On VAR reduce production unary_temp_op -> NEXT 
+-- On NOT reduce production unary_temp_op -> NEXT 
+-- On NEXT reduce production unary_temp_op -> NEXT 
+-- On LIVE reduce production unary_temp_op -> NEXT 
+-- On GLOBALLY reduce production unary_temp_op -> NEXT 
+-- On FORALL reduce production unary_temp_op -> NEXT 
+-- On FINALLY reduce production unary_temp_op -> NEXT 
+-- On EXISTS reduce production unary_temp_op -> NEXT 
+-- On EX reduce production unary_temp_op -> NEXT 
+-- On ERROR reduce production unary_temp_op -> NEXT 
+-- On EG reduce production unary_temp_op -> NEXT 
+-- On EF reduce production unary_temp_op -> NEXT 
+-- On CONST reduce production unary_temp_op -> NEXT 
+-- On COMMAND reduce production unary_temp_op -> NEXT 
+-- On AX reduce production unary_temp_op -> NEXT 
+-- On AVAILABLE reduce production unary_temp_op -> NEXT 
+-- On AG reduce production unary_temp_op -> NEXT 
+-- On AF reduce production unary_temp_op -> NEXT 
+-- On ACTIVE reduce production unary_temp_op -> NEXT 
+
+State 4:
+state_constant -> LIVE . [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+-- On XOR reduce production state_constant -> LIVE 
+-- On WEAK reduce production state_constant -> LIVE 
+-- On UNTIL reduce production state_constant -> LIVE 
+-- On S_RELEASE reduce production state_constant -> LIVE 
+-- On RELEASE reduce production state_constant -> LIVE 
+-- On OR reduce production state_constant -> LIVE 
+-- On IMP reduce production state_constant -> LIVE 
+-- On EOF reduce production state_constant -> LIVE 
+-- On AND reduce production state_constant -> LIVE 
+
+State 5:
+unary_temp_op -> GLOBALLY . [ VAR NOT NEXT LIVE GLOBALLY FORALL FINALLY EXISTS EX ERROR EG EF CONST COMMAND AX AVAILABLE AG AF ACTIVE ]
+-- On VAR reduce production unary_temp_op -> GLOBALLY 
+-- On NOT reduce production unary_temp_op -> GLOBALLY 
+-- On NEXT reduce production unary_temp_op -> GLOBALLY 
+-- On LIVE reduce production unary_temp_op -> GLOBALLY 
+-- On GLOBALLY reduce production unary_temp_op -> GLOBALLY 
+-- On FORALL reduce production unary_temp_op -> GLOBALLY 
+-- On FINALLY reduce production unary_temp_op -> GLOBALLY 
+-- On EXISTS reduce production unary_temp_op -> GLOBALLY 
+-- On EX reduce production unary_temp_op -> GLOBALLY 
+-- On ERROR reduce production unary_temp_op -> GLOBALLY 
+-- On EG reduce production unary_temp_op -> GLOBALLY 
+-- On EF reduce production unary_temp_op -> GLOBALLY 
+-- On CONST reduce production unary_temp_op -> GLOBALLY 
+-- On COMMAND reduce production unary_temp_op -> GLOBALLY 
+-- On AX reduce production unary_temp_op -> GLOBALLY 
+-- On AVAILABLE reduce production unary_temp_op -> GLOBALLY 
+-- On AG reduce production unary_temp_op -> GLOBALLY 
+-- On AF reduce production unary_temp_op -> GLOBALLY 
+-- On ACTIVE reduce production unary_temp_op -> GLOBALLY 
+
+State 6:
+unary_temp_op -> FORALL . [ VAR NOT NEXT LIVE GLOBALLY FORALL FINALLY EXISTS EX ERROR EG EF CONST COMMAND AX AVAILABLE AG AF ACTIVE ]
+-- On VAR reduce production unary_temp_op -> FORALL 
+-- On NOT reduce production unary_temp_op -> FORALL 
+-- On NEXT reduce production unary_temp_op -> FORALL 
+-- On LIVE reduce production unary_temp_op -> FORALL 
+-- On GLOBALLY reduce production unary_temp_op -> FORALL 
+-- On FORALL reduce production unary_temp_op -> FORALL 
+-- On FINALLY reduce production unary_temp_op -> FORALL 
+-- On EXISTS reduce production unary_temp_op -> FORALL 
+-- On EX reduce production unary_temp_op -> FORALL 
+-- On ERROR reduce production unary_temp_op -> FORALL 
+-- On EG reduce production unary_temp_op -> FORALL 
+-- On EF reduce production unary_temp_op -> FORALL 
+-- On CONST reduce production unary_temp_op -> FORALL 
+-- On COMMAND reduce production unary_temp_op -> FORALL 
+-- On AX reduce production unary_temp_op -> FORALL 
+-- On AVAILABLE reduce production unary_temp_op -> FORALL 
+-- On AG reduce production unary_temp_op -> FORALL 
+-- On AF reduce production unary_temp_op -> FORALL 
+-- On ACTIVE reduce production unary_temp_op -> FORALL 
+
+State 7:
+unary_temp_op -> FINALLY . [ VAR NOT NEXT LIVE GLOBALLY FORALL FINALLY EXISTS EX ERROR EG EF CONST COMMAND AX AVAILABLE AG AF ACTIVE ]
+-- On VAR reduce production unary_temp_op -> FINALLY 
+-- On NOT reduce production unary_temp_op -> FINALLY 
+-- On NEXT reduce production unary_temp_op -> FINALLY 
+-- On LIVE reduce production unary_temp_op -> FINALLY 
+-- On GLOBALLY reduce production unary_temp_op -> FINALLY 
+-- On FORALL reduce production unary_temp_op -> FINALLY 
+-- On FINALLY reduce production unary_temp_op -> FINALLY 
+-- On EXISTS reduce production unary_temp_op -> FINALLY 
+-- On EX reduce production unary_temp_op -> FINALLY 
+-- On ERROR reduce production unary_temp_op -> FINALLY 
+-- On EG reduce production unary_temp_op -> FINALLY 
+-- On EF reduce production unary_temp_op -> FINALLY 
+-- On CONST reduce production unary_temp_op -> FINALLY 
+-- On COMMAND reduce production unary_temp_op -> FINALLY 
+-- On AX reduce production unary_temp_op -> FINALLY 
+-- On AVAILABLE reduce production unary_temp_op -> FINALLY 
+-- On AG reduce production unary_temp_op -> FINALLY 
+-- On AF reduce production unary_temp_op -> FINALLY 
+-- On ACTIVE reduce production unary_temp_op -> FINALLY 
+
+State 8:
+unary_temp_op -> EXISTS . [ VAR NOT NEXT LIVE GLOBALLY FORALL FINALLY EXISTS EX ERROR EG EF CONST COMMAND AX AVAILABLE AG AF ACTIVE ]
+-- On VAR reduce production unary_temp_op -> EXISTS 
+-- On NOT reduce production unary_temp_op -> EXISTS 
+-- On NEXT reduce production unary_temp_op -> EXISTS 
+-- On LIVE reduce production unary_temp_op -> EXISTS 
+-- On GLOBALLY reduce production unary_temp_op -> EXISTS 
+-- On FORALL reduce production unary_temp_op -> EXISTS 
+-- On FINALLY reduce production unary_temp_op -> EXISTS 
+-- On EXISTS reduce production unary_temp_op -> EXISTS 
+-- On EX reduce production unary_temp_op -> EXISTS 
+-- On ERROR reduce production unary_temp_op -> EXISTS 
+-- On EG reduce production unary_temp_op -> EXISTS 
+-- On EF reduce production unary_temp_op -> EXISTS 
+-- On CONST reduce production unary_temp_op -> EXISTS 
+-- On COMMAND reduce production unary_temp_op -> EXISTS 
+-- On AX reduce production unary_temp_op -> EXISTS 
+-- On AVAILABLE reduce production unary_temp_op -> EXISTS 
+-- On AG reduce production unary_temp_op -> EXISTS 
+-- On AF reduce production unary_temp_op -> EXISTS 
+-- On ACTIVE reduce production unary_temp_op -> EXISTS 
+
+State 9:
+unary_temp_op -> EX . [ VAR NOT NEXT LIVE GLOBALLY FORALL FINALLY EXISTS EX ERROR EG EF CONST COMMAND AX AVAILABLE AG AF ACTIVE ]
+-- On VAR reduce production unary_temp_op -> EX 
+-- On NOT reduce production unary_temp_op -> EX 
+-- On NEXT reduce production unary_temp_op -> EX 
+-- On LIVE reduce production unary_temp_op -> EX 
+-- On GLOBALLY reduce production unary_temp_op -> EX 
+-- On FORALL reduce production unary_temp_op -> EX 
+-- On FINALLY reduce production unary_temp_op -> EX 
+-- On EXISTS reduce production unary_temp_op -> EX 
+-- On EX reduce production unary_temp_op -> EX 
+-- On ERROR reduce production unary_temp_op -> EX 
+-- On EG reduce production unary_temp_op -> EX 
+-- On EF reduce production unary_temp_op -> EX 
+-- On CONST reduce production unary_temp_op -> EX 
+-- On COMMAND reduce production unary_temp_op -> EX 
+-- On AX reduce production unary_temp_op -> EX 
+-- On AVAILABLE reduce production unary_temp_op -> EX 
+-- On AG reduce production unary_temp_op -> EX 
+-- On AF reduce production unary_temp_op -> EX 
+-- On ACTIVE reduce production unary_temp_op -> EX 
+
+State 10:
+state_constant -> ERROR . [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+-- On XOR reduce production state_constant -> ERROR 
+-- On WEAK reduce production state_constant -> ERROR 
+-- On UNTIL reduce production state_constant -> ERROR 
+-- On S_RELEASE reduce production state_constant -> ERROR 
+-- On RELEASE reduce production state_constant -> ERROR 
+-- On OR reduce production state_constant -> ERROR 
+-- On IMP reduce production state_constant -> ERROR 
+-- On EOF reduce production state_constant -> ERROR 
+-- On AND reduce production state_constant -> ERROR 
+
+State 11:
+unary_temp_op -> EG . [ VAR NOT NEXT LIVE GLOBALLY FORALL FINALLY EXISTS EX ERROR EG EF CONST COMMAND AX AVAILABLE AG AF ACTIVE ]
+-- On VAR reduce production unary_temp_op -> EG 
+-- On NOT reduce production unary_temp_op -> EG 
+-- On NEXT reduce production unary_temp_op -> EG 
+-- On LIVE reduce production unary_temp_op -> EG 
+-- On GLOBALLY reduce production unary_temp_op -> EG 
+-- On FORALL reduce production unary_temp_op -> EG 
+-- On FINALLY reduce production unary_temp_op -> EG 
+-- On EXISTS reduce production unary_temp_op -> EG 
+-- On EX reduce production unary_temp_op -> EG 
+-- On ERROR reduce production unary_temp_op -> EG 
+-- On EG reduce production unary_temp_op -> EG 
+-- On EF reduce production unary_temp_op -> EG 
+-- On CONST reduce production unary_temp_op -> EG 
+-- On COMMAND reduce production unary_temp_op -> EG 
+-- On AX reduce production unary_temp_op -> EG 
+-- On AVAILABLE reduce production unary_temp_op -> EG 
+-- On AG reduce production unary_temp_op -> EG 
+-- On AF reduce production unary_temp_op -> EG 
+-- On ACTIVE reduce production unary_temp_op -> EG 
+
+State 12:
+unary_temp_op -> EF . [ VAR NOT NEXT LIVE GLOBALLY FORALL FINALLY EXISTS EX ERROR EG EF CONST COMMAND AX AVAILABLE AG AF ACTIVE ]
+-- On VAR reduce production unary_temp_op -> EF 
+-- On NOT reduce production unary_temp_op -> EF 
+-- On NEXT reduce production unary_temp_op -> EF 
+-- On LIVE reduce production unary_temp_op -> EF 
+-- On GLOBALLY reduce production unary_temp_op -> EF 
+-- On FORALL reduce production unary_temp_op -> EF 
+-- On FINALLY reduce production unary_temp_op -> EF 
+-- On EXISTS reduce production unary_temp_op -> EF 
+-- On EX reduce production unary_temp_op -> EF 
+-- On ERROR reduce production unary_temp_op -> EF 
+-- On EG reduce production unary_temp_op -> EF 
+-- On EF reduce production unary_temp_op -> EF 
+-- On CONST reduce production unary_temp_op -> EF 
+-- On COMMAND reduce production unary_temp_op -> EF 
+-- On AX reduce production unary_temp_op -> EF 
+-- On AVAILABLE reduce production unary_temp_op -> EF 
+-- On AG reduce production unary_temp_op -> EF 
+-- On AF reduce production unary_temp_op -> EF 
+-- On ACTIVE reduce production unary_temp_op -> EF 
+
+State 13:
+valueId -> CONST . [ XOR WEAK UNTIL S_RELEASE STE ST RELEASE OR NEQ LTE LT IMP EQ EOF AND ]
+-- On XOR reduce production valueId -> CONST 
+-- On WEAK reduce production valueId -> CONST 
+-- On UNTIL reduce production valueId -> CONST 
+-- On S_RELEASE reduce production valueId -> CONST 
+-- On STE reduce production valueId -> CONST 
+-- On ST reduce production valueId -> CONST 
+-- On RELEASE reduce production valueId -> CONST 
+-- On OR reduce production valueId -> CONST 
+-- On NEQ reduce production valueId -> CONST 
+-- On LTE reduce production valueId -> CONST 
+-- On LT reduce production valueId -> CONST 
+-- On IMP reduce production valueId -> CONST 
+-- On EQ reduce production valueId -> CONST 
+-- On EOF reduce production valueId -> CONST 
+-- On AND reduce production valueId -> CONST 
+
+State 14:
+valueId -> COMMAND . [ XOR WEAK UNTIL S_RELEASE STE ST RELEASE OR NEQ LTE LT IMP EQ EOF AND ]
+-- On XOR reduce production valueId -> COMMAND 
+-- On WEAK reduce production valueId -> COMMAND 
+-- On UNTIL reduce production valueId -> COMMAND 
+-- On S_RELEASE reduce production valueId -> COMMAND 
+-- On STE reduce production valueId -> COMMAND 
+-- On ST reduce production valueId -> COMMAND 
+-- On RELEASE reduce production valueId -> COMMAND 
+-- On OR reduce production valueId -> COMMAND 
+-- On NEQ reduce production valueId -> COMMAND 
+-- On LTE reduce production valueId -> COMMAND 
+-- On LT reduce production valueId -> COMMAND 
+-- On IMP reduce production valueId -> COMMAND 
+-- On EQ reduce production valueId -> COMMAND 
+-- On EOF reduce production valueId -> COMMAND 
+-- On AND reduce production valueId -> COMMAND 
+
+State 15:
+unary_temp_op -> AX . [ VAR NOT NEXT LIVE GLOBALLY FORALL FINALLY EXISTS EX ERROR EG EF CONST COMMAND AX AVAILABLE AG AF ACTIVE ]
+-- On VAR reduce production unary_temp_op -> AX 
+-- On NOT reduce production unary_temp_op -> AX 
+-- On NEXT reduce production unary_temp_op -> AX 
+-- On LIVE reduce production unary_temp_op -> AX 
+-- On GLOBALLY reduce production unary_temp_op -> AX 
+-- On FORALL reduce production unary_temp_op -> AX 
+-- On FINALLY reduce production unary_temp_op -> AX 
+-- On EXISTS reduce production unary_temp_op -> AX 
+-- On EX reduce production unary_temp_op -> AX 
+-- On ERROR reduce production unary_temp_op -> AX 
+-- On EG reduce production unary_temp_op -> AX 
+-- On EF reduce production unary_temp_op -> AX 
+-- On CONST reduce production unary_temp_op -> AX 
+-- On COMMAND reduce production unary_temp_op -> AX 
+-- On AX reduce production unary_temp_op -> AX 
+-- On AVAILABLE reduce production unary_temp_op -> AX 
+-- On AG reduce production unary_temp_op -> AX 
+-- On AF reduce production unary_temp_op -> AX 
+-- On ACTIVE reduce production unary_temp_op -> AX 
+
+State 16:
+state_constant -> AVAILABLE . [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+-- On XOR reduce production state_constant -> AVAILABLE 
+-- On WEAK reduce production state_constant -> AVAILABLE 
+-- On UNTIL reduce production state_constant -> AVAILABLE 
+-- On S_RELEASE reduce production state_constant -> AVAILABLE 
+-- On RELEASE reduce production state_constant -> AVAILABLE 
+-- On OR reduce production state_constant -> AVAILABLE 
+-- On IMP reduce production state_constant -> AVAILABLE 
+-- On EOF reduce production state_constant -> AVAILABLE 
+-- On AND reduce production state_constant -> AVAILABLE 
+
+State 17:
+unary_temp_op -> AG . [ VAR NOT NEXT LIVE GLOBALLY FORALL FINALLY EXISTS EX ERROR EG EF CONST COMMAND AX AVAILABLE AG AF ACTIVE ]
+-- On VAR reduce production unary_temp_op -> AG 
+-- On NOT reduce production unary_temp_op -> AG 
+-- On NEXT reduce production unary_temp_op -> AG 
+-- On LIVE reduce production unary_temp_op -> AG 
+-- On GLOBALLY reduce production unary_temp_op -> AG 
+-- On FORALL reduce production unary_temp_op -> AG 
+-- On FINALLY reduce production unary_temp_op -> AG 
+-- On EXISTS reduce production unary_temp_op -> AG 
+-- On EX reduce production unary_temp_op -> AG 
+-- On ERROR reduce production unary_temp_op -> AG 
+-- On EG reduce production unary_temp_op -> AG 
+-- On EF reduce production unary_temp_op -> AG 
+-- On CONST reduce production unary_temp_op -> AG 
+-- On COMMAND reduce production unary_temp_op -> AG 
+-- On AX reduce production unary_temp_op -> AG 
+-- On AVAILABLE reduce production unary_temp_op -> AG 
+-- On AG reduce production unary_temp_op -> AG 
+-- On AF reduce production unary_temp_op -> AG 
+-- On ACTIVE reduce production unary_temp_op -> AG 
+
+State 18:
+unary_temp_op -> AF . [ VAR NOT NEXT LIVE GLOBALLY FORALL FINALLY EXISTS EX ERROR EG EF CONST COMMAND AX AVAILABLE AG AF ACTIVE ]
+-- On VAR reduce production unary_temp_op -> AF 
+-- On NOT reduce production unary_temp_op -> AF 
+-- On NEXT reduce production unary_temp_op -> AF 
+-- On LIVE reduce production unary_temp_op -> AF 
+-- On GLOBALLY reduce production unary_temp_op -> AF 
+-- On FORALL reduce production unary_temp_op -> AF 
+-- On FINALLY reduce production unary_temp_op -> AF 
+-- On EXISTS reduce production unary_temp_op -> AF 
+-- On EX reduce production unary_temp_op -> AF 
+-- On ERROR reduce production unary_temp_op -> AF 
+-- On EG reduce production unary_temp_op -> AF 
+-- On EF reduce production unary_temp_op -> AF 
+-- On CONST reduce production unary_temp_op -> AF 
+-- On COMMAND reduce production unary_temp_op -> AF 
+-- On AX reduce production unary_temp_op -> AF 
+-- On AVAILABLE reduce production unary_temp_op -> AF 
+-- On AG reduce production unary_temp_op -> AF 
+-- On AF reduce production unary_temp_op -> AF 
+-- On ACTIVE reduce production unary_temp_op -> AF 
+
+State 19:
+state_constant -> ACTIVE . [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+-- On XOR reduce production state_constant -> ACTIVE 
+-- On WEAK reduce production state_constant -> ACTIVE 
+-- On UNTIL reduce production state_constant -> ACTIVE 
+-- On S_RELEASE reduce production state_constant -> ACTIVE 
+-- On RELEASE reduce production state_constant -> ACTIVE 
+-- On OR reduce production state_constant -> ACTIVE 
+-- On IMP reduce production state_constant -> ACTIVE 
+-- On EOF reduce production state_constant -> ACTIVE 
+-- On AND reduce production state_constant -> ACTIVE 
+
+State 20:
+atomicForm -> valueId . comp valueId [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+-- On STE shift to state 21
+-- On ST shift to state 22
+-- On NEQ shift to state 23
+-- On LTE shift to state 24
+-- On LT shift to state 25
+-- On EQ shift to state 26
+-- On comp shift to state 27
+
+State 21:
+comp -> STE . [ VAR CONST COMMAND ]
+-- On VAR reduce production comp -> STE 
+-- On CONST reduce production comp -> STE 
+-- On COMMAND reduce production comp -> STE 
+
+State 22:
+comp -> ST . [ VAR CONST COMMAND ]
+-- On VAR reduce production comp -> ST 
+-- On CONST reduce production comp -> ST 
+-- On COMMAND reduce production comp -> ST 
+
+State 23:
+comp -> NEQ . [ VAR CONST COMMAND ]
+-- On VAR reduce production comp -> NEQ 
+-- On CONST reduce production comp -> NEQ 
+-- On COMMAND reduce production comp -> NEQ 
+
+State 24:
+comp -> LTE . [ VAR CONST COMMAND ]
+-- On VAR reduce production comp -> LTE 
+-- On CONST reduce production comp -> LTE 
+-- On COMMAND reduce production comp -> LTE 
+
+State 25:
+comp -> LT . [ VAR CONST COMMAND ]
+-- On VAR reduce production comp -> LT 
+-- On CONST reduce production comp -> LT 
+-- On COMMAND reduce production comp -> LT 
+
+State 26:
+comp -> EQ . [ VAR CONST COMMAND ]
+-- On VAR reduce production comp -> EQ 
+-- On CONST reduce production comp -> EQ 
+-- On COMMAND reduce production comp -> EQ 
+
+State 27:
+atomicForm -> valueId comp . valueId [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+-- On VAR shift to state 1
+-- On CONST shift to state 13
+-- On COMMAND shift to state 14
+-- On valueId shift to state 28
+
+State 28:
+atomicForm -> valueId comp valueId . [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+-- On XOR reduce production atomicForm -> valueId comp valueId 
+-- On WEAK reduce production atomicForm -> valueId comp valueId 
+-- On UNTIL reduce production atomicForm -> valueId comp valueId 
+-- On S_RELEASE reduce production atomicForm -> valueId comp valueId 
+-- On RELEASE reduce production atomicForm -> valueId comp valueId 
+-- On OR reduce production atomicForm -> valueId comp valueId 
+-- On IMP reduce production atomicForm -> valueId comp valueId 
+-- On EOF reduce production atomicForm -> valueId comp valueId 
+-- On AND reduce production atomicForm -> valueId comp valueId 
+
+State 29:
+boolForm -> unary_temp_op . boolForm [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+tempForm -> unary_temp_op . tempForm [ EOF ]
+-- On VAR shift to state 1
+-- On NOT shift to state 2
+-- On NEXT shift to state 3
+-- On LIVE shift to state 4
+-- On GLOBALLY shift to state 5
+-- On FORALL shift to state 6
+-- On FINALLY shift to state 7
+-- On EXISTS shift to state 8
+-- On EX shift to state 9
+-- On ERROR shift to state 10
+-- On EG shift to state 11
+-- On EF shift to state 12
+-- On CONST shift to state 13
+-- On COMMAND shift to state 14
+-- On AX shift to state 15
+-- On AVAILABLE shift to state 16
+-- On AG shift to state 17
+-- On AF shift to state 18
+-- On ACTIVE shift to state 19
+-- On valueId shift to state 20
+-- On unary_temp_op shift to state 29
+-- On unary_op shift to state 30
+-- On tempForm shift to state 48
+-- On state_constant shift to state 32
+-- On boolForm shift to state 49
+-- On atomicForm shift to state 46
+
+State 30:
+boolForm -> unary_op . boolForm [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+-- On VAR shift to state 1
+-- On NOT shift to state 2
+-- On NEXT shift to state 3
+-- On LIVE shift to state 4
+-- On GLOBALLY shift to state 5
+-- On FORALL shift to state 6
+-- On FINALLY shift to state 7
+-- On EXISTS shift to state 8
+-- On EX shift to state 9
+-- On ERROR shift to state 10
+-- On EG shift to state 11
+-- On EF shift to state 12
+-- On CONST shift to state 13
+-- On COMMAND shift to state 14
+-- On AX shift to state 15
+-- On AVAILABLE shift to state 16
+-- On AG shift to state 17
+-- On AF shift to state 18
+-- On ACTIVE shift to state 19
+-- On valueId shift to state 20
+-- On unary_temp_op shift to state 31
+-- On unary_op shift to state 30
+-- On state_constant shift to state 32
+-- On boolForm shift to state 47
+-- On atomicForm shift to state 46
+
+State 31:
+boolForm -> unary_temp_op . boolForm [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+-- On VAR shift to state 1
+-- On NOT shift to state 2
+-- On NEXT shift to state 3
+-- On LIVE shift to state 4
+-- On GLOBALLY shift to state 5
+-- On FORALL shift to state 6
+-- On FINALLY shift to state 7
+-- On EXISTS shift to state 8
+-- On EX shift to state 9
+-- On ERROR shift to state 10
+-- On EG shift to state 11
+-- On EF shift to state 12
+-- On CONST shift to state 13
+-- On COMMAND shift to state 14
+-- On AX shift to state 15
+-- On AVAILABLE shift to state 16
+-- On AG shift to state 17
+-- On AF shift to state 18
+-- On ACTIVE shift to state 19
+-- On valueId shift to state 20
+-- On unary_temp_op shift to state 31
+-- On unary_op shift to state 30
+-- On state_constant shift to state 32
+-- On boolForm shift to state 33
+-- On atomicForm shift to state 46
+
+State 32:
+atomicForm -> state_constant . [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+-- On XOR reduce production atomicForm -> state_constant 
+-- On WEAK reduce production atomicForm -> state_constant 
+-- On UNTIL reduce production atomicForm -> state_constant 
+-- On S_RELEASE reduce production atomicForm -> state_constant 
+-- On RELEASE reduce production atomicForm -> state_constant 
+-- On OR reduce production atomicForm -> state_constant 
+-- On IMP reduce production atomicForm -> state_constant 
+-- On EOF reduce production atomicForm -> state_constant 
+-- On AND reduce production atomicForm -> state_constant 
+
+State 33:
+boolForm -> boolForm . binary_op boolForm [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+boolForm -> unary_temp_op boolForm . [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+boolForm -> boolForm . binary_temp_op boolForm [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+-- On XOR shift to state 34
+-- On WEAK shift to state 35
+-- On UNTIL shift to state 36
+-- On S_RELEASE shift to state 37
+-- On RELEASE shift to state 38
+-- On OR shift to state 39
+-- On IMP shift to state 40
+-- On AND shift to state 41
+-- On binary_temp_op shift to state 42
+-- On binary_op shift to state 44
+-- On XOR reduce production boolForm -> unary_temp_op boolForm 
+-- On WEAK reduce production boolForm -> unary_temp_op boolForm 
+-- On UNTIL reduce production boolForm -> unary_temp_op boolForm 
+-- On S_RELEASE reduce production boolForm -> unary_temp_op boolForm 
+-- On RELEASE reduce production boolForm -> unary_temp_op boolForm 
+-- On OR reduce production boolForm -> unary_temp_op boolForm 
+-- On IMP reduce production boolForm -> unary_temp_op boolForm 
+-- On EOF reduce production boolForm -> unary_temp_op boolForm 
+-- On AND reduce production boolForm -> unary_temp_op boolForm 
+** Conflict on XOR WEAK UNTIL S_RELEASE RELEASE OR IMP AND
+
+State 34:
+binary_op -> XOR . [ VAR NOT NEXT LIVE GLOBALLY FORALL FINALLY EXISTS EX ERROR EG EF CONST COMMAND AX AVAILABLE AG AF ACTIVE ]
+-- On VAR reduce production binary_op -> XOR 
+-- On NOT reduce production binary_op -> XOR 
+-- On NEXT reduce production binary_op -> XOR 
+-- On LIVE reduce production binary_op -> XOR 
+-- On GLOBALLY reduce production binary_op -> XOR 
+-- On FORALL reduce production binary_op -> XOR 
+-- On FINALLY reduce production binary_op -> XOR 
+-- On EXISTS reduce production binary_op -> XOR 
+-- On EX reduce production binary_op -> XOR 
+-- On ERROR reduce production binary_op -> XOR 
+-- On EG reduce production binary_op -> XOR 
+-- On EF reduce production binary_op -> XOR 
+-- On CONST reduce production binary_op -> XOR 
+-- On COMMAND reduce production binary_op -> XOR 
+-- On AX reduce production binary_op -> XOR 
+-- On AVAILABLE reduce production binary_op -> XOR 
+-- On AG reduce production binary_op -> XOR 
+-- On AF reduce production binary_op -> XOR 
+-- On ACTIVE reduce production binary_op -> XOR 
+
+State 35:
+binary_temp_op -> WEAK . [ VAR NOT NEXT LIVE GLOBALLY FORALL FINALLY EXISTS EX ERROR EG EF CONST COMMAND AX AVAILABLE AG AF ACTIVE ]
+-- On VAR reduce production binary_temp_op -> WEAK 
+-- On NOT reduce production binary_temp_op -> WEAK 
+-- On NEXT reduce production binary_temp_op -> WEAK 
+-- On LIVE reduce production binary_temp_op -> WEAK 
+-- On GLOBALLY reduce production binary_temp_op -> WEAK 
+-- On FORALL reduce production binary_temp_op -> WEAK 
+-- On FINALLY reduce production binary_temp_op -> WEAK 
+-- On EXISTS reduce production binary_temp_op -> WEAK 
+-- On EX reduce production binary_temp_op -> WEAK 
+-- On ERROR reduce production binary_temp_op -> WEAK 
+-- On EG reduce production binary_temp_op -> WEAK 
+-- On EF reduce production binary_temp_op -> WEAK 
+-- On CONST reduce production binary_temp_op -> WEAK 
+-- On COMMAND reduce production binary_temp_op -> WEAK 
+-- On AX reduce production binary_temp_op -> WEAK 
+-- On AVAILABLE reduce production binary_temp_op -> WEAK 
+-- On AG reduce production binary_temp_op -> WEAK 
+-- On AF reduce production binary_temp_op -> WEAK 
+-- On ACTIVE reduce production binary_temp_op -> WEAK 
+
+State 36:
+binary_temp_op -> UNTIL . [ VAR NOT NEXT LIVE GLOBALLY FORALL FINALLY EXISTS EX ERROR EG EF CONST COMMAND AX AVAILABLE AG AF ACTIVE ]
+-- On VAR reduce production binary_temp_op -> UNTIL 
+-- On NOT reduce production binary_temp_op -> UNTIL 
+-- On NEXT reduce production binary_temp_op -> UNTIL 
+-- On LIVE reduce production binary_temp_op -> UNTIL 
+-- On GLOBALLY reduce production binary_temp_op -> UNTIL 
+-- On FORALL reduce production binary_temp_op -> UNTIL 
+-- On FINALLY reduce production binary_temp_op -> UNTIL 
+-- On EXISTS reduce production binary_temp_op -> UNTIL 
+-- On EX reduce production binary_temp_op -> UNTIL 
+-- On ERROR reduce production binary_temp_op -> UNTIL 
+-- On EG reduce production binary_temp_op -> UNTIL 
+-- On EF reduce production binary_temp_op -> UNTIL 
+-- On CONST reduce production binary_temp_op -> UNTIL 
+-- On COMMAND reduce production binary_temp_op -> UNTIL 
+-- On AX reduce production binary_temp_op -> UNTIL 
+-- On AVAILABLE reduce production binary_temp_op -> UNTIL 
+-- On AG reduce production binary_temp_op -> UNTIL 
+-- On AF reduce production binary_temp_op -> UNTIL 
+-- On ACTIVE reduce production binary_temp_op -> UNTIL 
+
+State 37:
+binary_temp_op -> S_RELEASE . [ VAR NOT NEXT LIVE GLOBALLY FORALL FINALLY EXISTS EX ERROR EG EF CONST COMMAND AX AVAILABLE AG AF ACTIVE ]
+-- On VAR reduce production binary_temp_op -> S_RELEASE 
+-- On NOT reduce production binary_temp_op -> S_RELEASE 
+-- On NEXT reduce production binary_temp_op -> S_RELEASE 
+-- On LIVE reduce production binary_temp_op -> S_RELEASE 
+-- On GLOBALLY reduce production binary_temp_op -> S_RELEASE 
+-- On FORALL reduce production binary_temp_op -> S_RELEASE 
+-- On FINALLY reduce production binary_temp_op -> S_RELEASE 
+-- On EXISTS reduce production binary_temp_op -> S_RELEASE 
+-- On EX reduce production binary_temp_op -> S_RELEASE 
+-- On ERROR reduce production binary_temp_op -> S_RELEASE 
+-- On EG reduce production binary_temp_op -> S_RELEASE 
+-- On EF reduce production binary_temp_op -> S_RELEASE 
+-- On CONST reduce production binary_temp_op -> S_RELEASE 
+-- On COMMAND reduce production binary_temp_op -> S_RELEASE 
+-- On AX reduce production binary_temp_op -> S_RELEASE 
+-- On AVAILABLE reduce production binary_temp_op -> S_RELEASE 
+-- On AG reduce production binary_temp_op -> S_RELEASE 
+-- On AF reduce production binary_temp_op -> S_RELEASE 
+-- On ACTIVE reduce production binary_temp_op -> S_RELEASE 
+
+State 38:
+binary_temp_op -> RELEASE . [ VAR NOT NEXT LIVE GLOBALLY FORALL FINALLY EXISTS EX ERROR EG EF CONST COMMAND AX AVAILABLE AG AF ACTIVE ]
+-- On VAR reduce production binary_temp_op -> RELEASE 
+-- On NOT reduce production binary_temp_op -> RELEASE 
+-- On NEXT reduce production binary_temp_op -> RELEASE 
+-- On LIVE reduce production binary_temp_op -> RELEASE 
+-- On GLOBALLY reduce production binary_temp_op -> RELEASE 
+-- On FORALL reduce production binary_temp_op -> RELEASE 
+-- On FINALLY reduce production binary_temp_op -> RELEASE 
+-- On EXISTS reduce production binary_temp_op -> RELEASE 
+-- On EX reduce production binary_temp_op -> RELEASE 
+-- On ERROR reduce production binary_temp_op -> RELEASE 
+-- On EG reduce production binary_temp_op -> RELEASE 
+-- On EF reduce production binary_temp_op -> RELEASE 
+-- On CONST reduce production binary_temp_op -> RELEASE 
+-- On COMMAND reduce production binary_temp_op -> RELEASE 
+-- On AX reduce production binary_temp_op -> RELEASE 
+-- On AVAILABLE reduce production binary_temp_op -> RELEASE 
+-- On AG reduce production binary_temp_op -> RELEASE 
+-- On AF reduce production binary_temp_op -> RELEASE 
+-- On ACTIVE reduce production binary_temp_op -> RELEASE 
+
+State 39:
+binary_op -> OR . [ VAR NOT NEXT LIVE GLOBALLY FORALL FINALLY EXISTS EX ERROR EG EF CONST COMMAND AX AVAILABLE AG AF ACTIVE ]
+-- On VAR reduce production binary_op -> OR 
+-- On NOT reduce production binary_op -> OR 
+-- On NEXT reduce production binary_op -> OR 
+-- On LIVE reduce production binary_op -> OR 
+-- On GLOBALLY reduce production binary_op -> OR 
+-- On FORALL reduce production binary_op -> OR 
+-- On FINALLY reduce production binary_op -> OR 
+-- On EXISTS reduce production binary_op -> OR 
+-- On EX reduce production binary_op -> OR 
+-- On ERROR reduce production binary_op -> OR 
+-- On EG reduce production binary_op -> OR 
+-- On EF reduce production binary_op -> OR 
+-- On CONST reduce production binary_op -> OR 
+-- On COMMAND reduce production binary_op -> OR 
+-- On AX reduce production binary_op -> OR 
+-- On AVAILABLE reduce production binary_op -> OR 
+-- On AG reduce production binary_op -> OR 
+-- On AF reduce production binary_op -> OR 
+-- On ACTIVE reduce production binary_op -> OR 
+
+State 40:
+binary_op -> IMP . [ VAR NOT NEXT LIVE GLOBALLY FORALL FINALLY EXISTS EX ERROR EG EF CONST COMMAND AX AVAILABLE AG AF ACTIVE ]
+-- On VAR reduce production binary_op -> IMP 
+-- On NOT reduce production binary_op -> IMP 
+-- On NEXT reduce production binary_op -> IMP 
+-- On LIVE reduce production binary_op -> IMP 
+-- On GLOBALLY reduce production binary_op -> IMP 
+-- On FORALL reduce production binary_op -> IMP 
+-- On FINALLY reduce production binary_op -> IMP 
+-- On EXISTS reduce production binary_op -> IMP 
+-- On EX reduce production binary_op -> IMP 
+-- On ERROR reduce production binary_op -> IMP 
+-- On EG reduce production binary_op -> IMP 
+-- On EF reduce production binary_op -> IMP 
+-- On CONST reduce production binary_op -> IMP 
+-- On COMMAND reduce production binary_op -> IMP 
+-- On AX reduce production binary_op -> IMP 
+-- On AVAILABLE reduce production binary_op -> IMP 
+-- On AG reduce production binary_op -> IMP 
+-- On AF reduce production binary_op -> IMP 
+-- On ACTIVE reduce production binary_op -> IMP 
+
+State 41:
+binary_op -> AND . [ VAR NOT NEXT LIVE GLOBALLY FORALL FINALLY EXISTS EX ERROR EG EF CONST COMMAND AX AVAILABLE AG AF ACTIVE ]
+-- On VAR reduce production binary_op -> AND 
+-- On NOT reduce production binary_op -> AND 
+-- On NEXT reduce production binary_op -> AND 
+-- On LIVE reduce production binary_op -> AND 
+-- On GLOBALLY reduce production binary_op -> AND 
+-- On FORALL reduce production binary_op -> AND 
+-- On FINALLY reduce production binary_op -> AND 
+-- On EXISTS reduce production binary_op -> AND 
+-- On EX reduce production binary_op -> AND 
+-- On ERROR reduce production binary_op -> AND 
+-- On EG reduce production binary_op -> AND 
+-- On EF reduce production binary_op -> AND 
+-- On CONST reduce production binary_op -> AND 
+-- On COMMAND reduce production binary_op -> AND 
+-- On AX reduce production binary_op -> AND 
+-- On AVAILABLE reduce production binary_op -> AND 
+-- On AG reduce production binary_op -> AND 
+-- On AF reduce production binary_op -> AND 
+-- On ACTIVE reduce production binary_op -> AND 
+
+State 42:
+boolForm -> boolForm binary_temp_op . boolForm [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+-- On VAR shift to state 1
+-- On NOT shift to state 2
+-- On NEXT shift to state 3
+-- On LIVE shift to state 4
+-- On GLOBALLY shift to state 5
+-- On FORALL shift to state 6
+-- On FINALLY shift to state 7
+-- On EXISTS shift to state 8
+-- On EX shift to state 9
+-- On ERROR shift to state 10
+-- On EG shift to state 11
+-- On EF shift to state 12
+-- On CONST shift to state 13
+-- On COMMAND shift to state 14
+-- On AX shift to state 15
+-- On AVAILABLE shift to state 16
+-- On AG shift to state 17
+-- On AF shift to state 18
+-- On ACTIVE shift to state 19
+-- On valueId shift to state 20
+-- On unary_temp_op shift to state 31
+-- On unary_op shift to state 30
+-- On state_constant shift to state 32
+-- On boolForm shift to state 43
+-- On atomicForm shift to state 46
+
+State 43:
+boolForm -> boolForm . binary_op boolForm [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+boolForm -> boolForm . binary_temp_op boolForm [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+boolForm -> boolForm binary_temp_op boolForm . [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+-- On XOR shift to state 34
+-- On WEAK shift to state 35
+-- On UNTIL shift to state 36
+-- On S_RELEASE shift to state 37
+-- On RELEASE shift to state 38
+-- On OR shift to state 39
+-- On IMP shift to state 40
+-- On AND shift to state 41
+-- On binary_temp_op shift to state 42
+-- On binary_op shift to state 44
+-- On XOR reduce production boolForm -> boolForm binary_temp_op boolForm 
+-- On WEAK reduce production boolForm -> boolForm binary_temp_op boolForm 
+-- On UNTIL reduce production boolForm -> boolForm binary_temp_op boolForm 
+-- On S_RELEASE reduce production boolForm -> boolForm binary_temp_op boolForm 
+-- On RELEASE reduce production boolForm -> boolForm binary_temp_op boolForm 
+-- On OR reduce production boolForm -> boolForm binary_temp_op boolForm 
+-- On IMP reduce production boolForm -> boolForm binary_temp_op boolForm 
+-- On EOF reduce production boolForm -> boolForm binary_temp_op boolForm 
+-- On AND reduce production boolForm -> boolForm binary_temp_op boolForm 
+** Conflict on XOR WEAK UNTIL S_RELEASE RELEASE OR IMP AND
+
+State 44:
+boolForm -> boolForm binary_op . boolForm [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+-- On VAR shift to state 1
+-- On NOT shift to state 2
+-- On NEXT shift to state 3
+-- On LIVE shift to state 4
+-- On GLOBALLY shift to state 5
+-- On FORALL shift to state 6
+-- On FINALLY shift to state 7
+-- On EXISTS shift to state 8
+-- On EX shift to state 9
+-- On ERROR shift to state 10
+-- On EG shift to state 11
+-- On EF shift to state 12
+-- On CONST shift to state 13
+-- On COMMAND shift to state 14
+-- On AX shift to state 15
+-- On AVAILABLE shift to state 16
+-- On AG shift to state 17
+-- On AF shift to state 18
+-- On ACTIVE shift to state 19
+-- On valueId shift to state 20
+-- On unary_temp_op shift to state 31
+-- On unary_op shift to state 30
+-- On state_constant shift to state 32
+-- On boolForm shift to state 45
+-- On atomicForm shift to state 46
+
+State 45:
+boolForm -> boolForm . binary_op boolForm [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+boolForm -> boolForm binary_op boolForm . [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+boolForm -> boolForm . binary_temp_op boolForm [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+-- On XOR shift to state 34
+-- On WEAK shift to state 35
+-- On UNTIL shift to state 36
+-- On S_RELEASE shift to state 37
+-- On RELEASE shift to state 38
+-- On OR shift to state 39
+-- On IMP shift to state 40
+-- On AND shift to state 41
+-- On binary_temp_op shift to state 42
+-- On binary_op shift to state 44
+-- On XOR reduce production boolForm -> boolForm binary_op boolForm 
+-- On WEAK reduce production boolForm -> boolForm binary_op boolForm 
+-- On UNTIL reduce production boolForm -> boolForm binary_op boolForm 
+-- On S_RELEASE reduce production boolForm -> boolForm binary_op boolForm 
+-- On RELEASE reduce production boolForm -> boolForm binary_op boolForm 
+-- On OR reduce production boolForm -> boolForm binary_op boolForm 
+-- On IMP reduce production boolForm -> boolForm binary_op boolForm 
+-- On EOF reduce production boolForm -> boolForm binary_op boolForm 
+-- On AND reduce production boolForm -> boolForm binary_op boolForm 
+** Conflict on XOR WEAK UNTIL S_RELEASE RELEASE OR IMP AND
+
+State 46:
+boolForm -> atomicForm . [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+-- On XOR reduce production boolForm -> atomicForm 
+-- On WEAK reduce production boolForm -> atomicForm 
+-- On UNTIL reduce production boolForm -> atomicForm 
+-- On S_RELEASE reduce production boolForm -> atomicForm 
+-- On RELEASE reduce production boolForm -> atomicForm 
+-- On OR reduce production boolForm -> atomicForm 
+-- On IMP reduce production boolForm -> atomicForm 
+-- On EOF reduce production boolForm -> atomicForm 
+-- On AND reduce production boolForm -> atomicForm 
+
+State 47:
+boolForm -> unary_op boolForm . [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+boolForm -> boolForm . binary_op boolForm [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+boolForm -> boolForm . binary_temp_op boolForm [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+-- On XOR shift to state 34
+-- On WEAK shift to state 35
+-- On UNTIL shift to state 36
+-- On S_RELEASE shift to state 37
+-- On RELEASE shift to state 38
+-- On OR shift to state 39
+-- On IMP shift to state 40
+-- On AND shift to state 41
+-- On binary_temp_op shift to state 42
+-- On binary_op shift to state 44
+-- On XOR reduce production boolForm -> unary_op boolForm 
+-- On WEAK reduce production boolForm -> unary_op boolForm 
+-- On UNTIL reduce production boolForm -> unary_op boolForm 
+-- On S_RELEASE reduce production boolForm -> unary_op boolForm 
+-- On RELEASE reduce production boolForm -> unary_op boolForm 
+-- On OR reduce production boolForm -> unary_op boolForm 
+-- On IMP reduce production boolForm -> unary_op boolForm 
+-- On EOF reduce production boolForm -> unary_op boolForm 
+-- On AND reduce production boolForm -> unary_op boolForm 
+** Conflict on XOR WEAK UNTIL S_RELEASE RELEASE OR IMP AND
+
+State 48:
+tempForm -> unary_temp_op tempForm . [ EOF ]
+-- On EOF reduce production tempForm -> unary_temp_op tempForm 
+
+State 49:
+boolForm -> boolForm . binary_op boolForm [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+boolForm -> unary_temp_op boolForm . [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+boolForm -> boolForm . binary_temp_op boolForm [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+tempForm -> boolForm . [ EOF ]
+-- On XOR shift to state 34
+-- On WEAK shift to state 35
+-- On UNTIL shift to state 36
+-- On S_RELEASE shift to state 37
+-- On RELEASE shift to state 38
+-- On OR shift to state 39
+-- On IMP shift to state 40
+-- On AND shift to state 41
+-- On binary_temp_op shift to state 42
+-- On binary_op shift to state 44
+-- On XOR reduce production boolForm -> unary_temp_op boolForm 
+-- On WEAK reduce production boolForm -> unary_temp_op boolForm 
+-- On UNTIL reduce production boolForm -> unary_temp_op boolForm 
+-- On S_RELEASE reduce production boolForm -> unary_temp_op boolForm 
+-- On RELEASE reduce production boolForm -> unary_temp_op boolForm 
+-- On OR reduce production boolForm -> unary_temp_op boolForm 
+-- On IMP reduce production boolForm -> unary_temp_op boolForm 
+-- On EOF reduce production boolForm -> unary_temp_op boolForm 
+-- On EOF reduce production tempForm -> boolForm 
+-- On AND reduce production boolForm -> unary_temp_op boolForm 
+** Conflict on XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND
+
+State 50:
+parse_formula -> tempForm . EOF [ # ]
+-- On EOF shift to state 51
+
+State 51:
+parse_formula -> tempForm EOF . [ # ]
+-- On # reduce production parse_formula -> tempForm EOF 
+
+State 52:
+parse_formula' -> parse_formula . [ # ]
+-- On # accept parse_formula
+
+State 53:
+boolForm -> boolForm . binary_op boolForm [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+boolForm -> boolForm . binary_temp_op boolForm [ XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND ]
+tempForm -> boolForm . [ EOF ]
+-- On XOR shift to state 34
+-- On WEAK shift to state 35
+-- On UNTIL shift to state 36
+-- On S_RELEASE shift to state 37
+-- On RELEASE shift to state 38
+-- On OR shift to state 39
+-- On IMP shift to state 40
+-- On AND shift to state 41
+-- On binary_temp_op shift to state 42
+-- On binary_op shift to state 44
+-- On EOF reduce production tempForm -> boolForm 
+

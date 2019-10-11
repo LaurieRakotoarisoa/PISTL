@@ -1,0 +1,146 @@
+
+** Conflict (shift/reduce) in state 49.
+** Tokens involved: XOR WEAK UNTIL S_RELEASE RELEASE OR IMP EOF AND
+** The following explanations concentrate on token XOR.
+** This state is reached from parse_formula after reading:
+
+unary_temp_op boolForm 
+
+** The derivations that appear below have the following common factor:
+** (The question mark symbol (?) represents the spot where the derivations begin to differ.)
+
+parse_formula 
+tempForm EOF 
+boolForm 
+(?)
+
+** In state 49, looking ahead at XOR, shifting is permitted
+** because of the following sub-derivation:
+
+unary_temp_op boolForm 
+              boolForm binary_op boolForm 
+                       . XOR 
+
+** In state 49, looking ahead at XOR, reducing production
+** boolForm -> unary_temp_op boolForm 
+** is permitted because of the following sub-derivation:
+
+boolForm binary_op boolForm // lookahead token appears because binary_op can begin with XOR
+unary_temp_op boolForm . 
+
+** Conflict (shift/reduce) in state 47.
+** Tokens involved: XOR WEAK UNTIL S_RELEASE RELEASE OR IMP AND
+** The following explanations concentrate on token XOR.
+** This state is reached from parse_formula after reading:
+
+unary_op boolForm 
+
+** The derivations that appear below have the following common factor:
+** (The question mark symbol (?) represents the spot where the derivations begin to differ.)
+
+parse_formula 
+tempForm EOF 
+boolForm 
+(?)
+
+** In state 47, looking ahead at XOR, shifting is permitted
+** because of the following sub-derivation:
+
+unary_op boolForm 
+         boolForm binary_op boolForm 
+                  . XOR 
+
+** In state 47, looking ahead at XOR, reducing production
+** boolForm -> unary_op boolForm 
+** is permitted because of the following sub-derivation:
+
+boolForm binary_op boolForm // lookahead token appears because binary_op can begin with XOR
+unary_op boolForm . 
+
+** Conflict (shift/reduce) in state 45.
+** Tokens involved: XOR WEAK UNTIL S_RELEASE RELEASE OR IMP AND
+** The following explanations concentrate on token XOR.
+** This state is reached from parse_formula after reading:
+
+boolForm binary_op boolForm 
+
+** The derivations that appear below have the following common factor:
+** (The question mark symbol (?) represents the spot where the derivations begin to differ.)
+
+parse_formula 
+tempForm EOF 
+boolForm 
+(?)
+
+** In state 45, looking ahead at XOR, shifting is permitted
+** because of the following sub-derivation:
+
+boolForm binary_op boolForm 
+                   boolForm binary_op boolForm 
+                            . XOR 
+
+** In state 45, looking ahead at XOR, reducing production
+** boolForm -> boolForm binary_op boolForm 
+** is permitted because of the following sub-derivation:
+
+boolForm binary_op boolForm // lookahead token appears because binary_op can begin with XOR
+boolForm binary_op boolForm . 
+
+** Conflict (shift/reduce) in state 43.
+** Tokens involved: XOR WEAK UNTIL S_RELEASE RELEASE OR IMP AND
+** The following explanations concentrate on token XOR.
+** This state is reached from parse_formula after reading:
+
+boolForm binary_temp_op boolForm 
+
+** The derivations that appear below have the following common factor:
+** (The question mark symbol (?) represents the spot where the derivations begin to differ.)
+
+parse_formula 
+tempForm EOF 
+boolForm 
+(?)
+
+** In state 43, looking ahead at XOR, shifting is permitted
+** because of the following sub-derivation:
+
+boolForm binary_temp_op boolForm 
+                        boolForm binary_op boolForm 
+                                 . XOR 
+
+** In state 43, looking ahead at XOR, reducing production
+** boolForm -> boolForm binary_temp_op boolForm 
+** is permitted because of the following sub-derivation:
+
+boolForm binary_op boolForm // lookahead token appears because binary_op can begin with XOR
+boolForm binary_temp_op boolForm . 
+
+** Conflict (shift/reduce) in state 33.
+** Tokens involved: XOR WEAK UNTIL S_RELEASE RELEASE OR IMP AND
+** The following explanations concentrate on token XOR.
+** This state is reached from parse_formula after reading:
+
+unary_op unary_temp_op boolForm 
+
+** The derivations that appear below have the following common factor:
+** (The question mark symbol (?) represents the spot where the derivations begin to differ.)
+
+parse_formula 
+tempForm EOF 
+boolForm 
+unary_op boolForm 
+         (?)
+
+** In state 33, looking ahead at XOR, shifting is permitted
+** because of the following sub-derivation:
+
+unary_temp_op boolForm 
+              boolForm binary_op boolForm 
+                       . XOR 
+
+** In state 33, looking ahead at XOR, reducing production
+** boolForm -> unary_temp_op boolForm 
+** is permitted because of the following sub-derivation:
+
+boolForm binary_op boolForm // lookahead token appears because binary_op can begin with XOR
+unary_temp_op boolForm . 

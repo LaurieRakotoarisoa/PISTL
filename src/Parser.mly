@@ -61,7 +61,6 @@
 %type <Formula.binary_op> binary_op
 
 %{
-  open Lexer
   open Formula
 %}
 
@@ -81,8 +80,8 @@ boolForm:
   | atomicForm {Bf1($1) }
   | unary_op boolForm {Bf2($1,$2)}
   | boolForm binary_op boolForm {Bf3($1,$2,$3)}
-  | unary_temp_op boolForm {Bf2($1,$2)}
-  | boolForm binary_temp_op boolForm {Bf2($1,$2,$3)}
+  | unary_temp_op boolForm {Bf4($1,$2)}
+  | boolForm binary_temp_op boolForm {Bf5($1,$2,$3)}
 
 atomicForm:
   | state_constant {Af1($1)}
