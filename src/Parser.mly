@@ -1,4 +1,4 @@
-%token <int> NUM
+(* %token <int> NUM*)
 %token <string> VAR
 %token <string> CONST
 %token <string> COMMAND
@@ -17,17 +17,13 @@
 %token UNTIL
 %token NEXT
 %token WEAK
-%token DOT
 %token ERROR
 %token LIVE
 %token ACTIVE
 %token AVAILABLE
 %token XOR
-%token ADD
-%token SUB
-%token TIMES
-%token DIV
 %token NOT
+%token NEQ
 %token EQ
 %token LT
 %token ST
@@ -36,35 +32,33 @@
 %token OR
 %token AND
 %token IMP
+(*
 %token LPAR
 %token RPAR
 %token LBOX
-%token RBOX
-%token COMMA
+%token RBOX *)
 %token EOF
 
-
+(*
 %left OR
 %left AND
 %left EQ NEQ
 %left LT ST LTE STE
-%left PLUS MINUS
-%left TIMES DIV MOD
 %left LPAR RPAR DOT IMP LBOX RBOX
-
+*)
 (*-------------------------------------------------*)
 
 
-%type <Formula.tempForm> 
-%type <Formula.boolForm>
-%type <Formula.atomicForm>
-%type <Formula.valueID>
-%type <Formula.state_constant> 
-%type <Formula.binary_temp_op> 
-%type <Formula.unary_temp_op>
-%type <Formula.comp>
-%type <Formula.unary_op>
-%type <Formula.binary_op>
+%type <Formula.tempForm> tempForm
+%type <Formula.boolForm>  boolForm
+%type <Formula.atomicForm> atomicForm
+%type <Formula.valueId> valueId
+%type <Formula.state_constant> state_constant
+%type <Formula.binary_temp_op> binary_temp_op
+%type <Formula.unary_temp_op> unary_temp_op
+%type <Formula.comp> comp
+%type <Formula.unary_op> unary_op
+%type <Formula.binary_op> binary_op
 
 %{
   open Lexer
@@ -77,24 +71,24 @@
 %% 
 
 parse_formula:
-  | temp_form EOF { Form($1)}
+  | tempForm EOF { Form($1)}
 
-temp_form:
-  | bool_form {Tf1($1)}
-  | temp_op temp {Tf2($1,$2)}
+tempForm:
+  | boolForm {Tf1($1)}
+  | unary_temp_op tempForm {Tf2($1,$2)}
 
-bool_form:
-  | atomic_form {Bf1{$1} }
-  | unary_op bool_form {Bf2{$1,$2}}
-  | bool_form binary_op bool_form {Bf3{$1,$2,$3}}
-  | unary_temp_op bool_form {Bf2{$1,$2}}
-  | bool_form binary_temp_op bool_form {Bf2{$1,$2,$3}}
+boolForm:
+  | atomicForm {Bf1($1) }
+  | unary_op boolForm {Bf2($1,$2)}
+  | boolForm binary_op boolForm {Bf3($1,$2,$3)}
+  | unary_temp_op boolForm {Bf2($1,$2)}
+  | boolForm binary_temp_op boolForm {Bf2($1,$2,$3)}
 
-atomic_form:
+atomicForm:
   | state_constant {Af1($1)}
   | valueId comp valueId {Af2($1,$2,$3)}
 
-value_Id:
+valueId:
   | VAR {Variable($1)}
   | CONST {Constant($1)}
   | COMMAND {Command($1)}
@@ -119,16 +113,18 @@ binary_op :
   | XOR {Xor}
   | IMP {Imp}
 
-temp_op :
+binary_temp_op :
+  | WEAK {W}
+  | S_RELEASE {M}
+  | RELEASE {R}
+  | UNTIL {U}
+
+unary_temp_op :
   | FORALL {A}
   | EXISTS {E}
   | FINALLY {F}
   | GLOBALLY {G}
-  | S_RELEASE {M}
-  | RELEASE {R}
-  | UNTIL {U}
   | NEXT {X}
-  | WEAK {W}
   | AX {AX} 
   | AF {AF}
   | AG {AG}
