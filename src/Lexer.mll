@@ -6,14 +6,18 @@
 rule token = parse
   [' ' '\t' '\n'] {token lexbuf}
   | ['0'-'9']+('.'['0'-'9'])? as lxm { NUM(int_of_string lxm) }
-  | 'A' {FORALL}
+  | "ACTIVE"   {ACTIVE}
+  | "AVAILABLE" {AVAILABLE}
+  | "ERROR" {ERROR}
+  | "LIVE"  {LIVE}
   | "AX" {AX}
   | "AF" {AF}
   | "AG" {AG}
-  | 'E' {EXISTS}
   | "EX" {EX}
   | "EF" {EF}
   | "EG" {EG}
+  | 'A' {FORALL}
+  | 'E' {EXISTS}
   | ('F'|"<>") {FINALLY}
   | ('G'|"[]") {GLOBALLY}
   | 'M' {S_RELEASE}
@@ -22,10 +26,6 @@ rule token = parse
   | ('X'| 'o') {NEXT}
   | 'W' {WEAK}
   | '.' {DOT}
-  | "ERROR" {ERROR}
-  | "LIVE"  {LIVE}
-  | "ACTIVE"   {ACTIVE}
-  | "AVAILABLE" {AVAILABLE}
   | "xor" {XOR}
   | '+' {ADD}
   | '-' {SUB}
@@ -47,7 +47,7 @@ rule token = parse
   | '['   { LBOX }
   | ']'   { RBOX }
   | ',' {COMMA}
-  | (['a'-'z''A'-'Z']+).(['a'-'z''A'-'Z']['A'-'Z' '0'-'9']*) as x {COMMAND(x)}
+  | (['a'-'z''A'-'Z']+)'.'(['a'-'z''A'-'Z']['A'-'Z' '0'-'9']*) as x {COMMAND(x)}
   | ['a'-'z'] (['a'-'z' 'A'-'Z' '0'-'9']*) as x {VAR(x)}
   | ['A'-'Z'](['A'-'Z' '0'-'9']*) as x {CONST(x)}
   | eof { EOF }
