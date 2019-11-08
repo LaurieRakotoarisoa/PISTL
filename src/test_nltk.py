@@ -23,7 +23,7 @@ phrase3 = "When a match is found all fields are filled in"
 phrase4 = "When a connection is made to the POP server, mail will be transferred to the local machine "
 phrase5 = "When the name of a mailbox is double-clicked, that mailbox will be opened"
 
-dico = add_elem(dico,phrase5)
+dico = add_elem(dico,phrase4)
 
 def add_string(tag,dico):
     if len(dico[tag]) > 0:
@@ -91,4 +91,4 @@ rd_parser = nltk.RecursiveDescentParser(grammar1)
 #for tree in rd_parser.parse(sent):
  #   tree.draw() 
 
-with_comma(phrase5)
+with_comma(phrase4)
