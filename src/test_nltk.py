@@ -1,96 +1,94 @@
 import nltk
 from nltk import WordPunctTokenizer
 
+dico = dict()
 
-def recup_NN(phrase):
+def add_elem(d, phrase):
     tokenizer = WordPunctTokenizer()
     tokens = tokenizer.tokenize(phrase)
-    tags = nltk.pos_tag(tokens)
-    
-    noms = []
-    
+    tags = nltk.pos_tag(tokens)   
+
     for (m,t) in tags:
-        if ((t == "NN" or t == "NNS") and m not in noms):
-            noms.append(m)
-    res = ""
-    
-    for n in noms:
-        res+="""'"""+n+"""'"""+"| "
-    return res[:-2]
+        if t not in d:
+            if t.isalpha():
+                d[t] = [m]
+        else:
+            if m not in d[t]:
+                d[t].append(m)
+    return d
 
-def recup_JJ(phrase):
-    tokenizer = WordPunctTokenizer()
-    tokens = tokenizer.tokenize(phrase)
-    tags = nltk.pos_tag(tokens)
-    
-    noms = []
-    
-    for (m,t) in tags:
-        if t == "JJ" and m not in noms:
-            noms.append(m)
-    res = ""
-    
-    for n in noms:
-        res+="""'"""+n+"""'"""+"| "
-    return res[:-2]
-    
+phrase = "When an error message is displayed the only available user action is acknowledgement via the ok button"
+phrase2 = "When the cancel button on the identify traveler screen is pressed control returns to the main menu screen" 
+phrase3 = "When a match is found all fields are filled in"
+phrase4 = "When a connection is made to the POP server, mail will be transferred to the local machine "
+phrase5 = "When the name of a mailbox is double-clicked, that mailbox will be opened"
 
-def recup_VBN(phrase):
-    tokenizer = WordPunctTokenizer()
-    tokens = tokenizer.tokenize(phrase)
-    tags = nltk.pos_tag(tokens)
-    
-    noms = []
-    
-    for (m,t) in tags:
-        if t == "VBN" and m not in noms:
-            noms.append(m)
-    res = ""
-    
-    for n in noms:
-        res+="""'"""+n+"""'"""+"| "
-    return res[:-2]
+dico = add_elem(dico,phrase5)
 
-def recup_VBZ(phrase):
-    tokenizer = WordPunctTokenizer()
-    tokens = tokenizer.tokenize(phrase)
-    tags = nltk.pos_tag(tokens)
-    
-    noms = []
-    
-    for (m,t) in tags:
-        if t == "VBZ" and m not in noms:
-            noms.append(m)
-    res = ""
-    
-    for n in noms:
-        res+="""'"""+n+"""'"""+"| "
-    return res[:-2]
+def add_string(tag,dico):
+    if len(dico[tag]) > 0:
+        res = tag+" -> "
+        for n in dico[tag]:
+            res+="""'"""+n+"""'"""+"| "
+        return res[:-2]+"\n"
+    else:
+        return ""
 
-phrase = "When the cancel button is pressed control returns to the main menu screen"
-
+def add_tags(dico):
+    res =""
+    for t in dico:
+        res+=add_string(t,dico)
+    return res
  
-grammar1 = nltk.CFG.fromstring("""
- 
-  S -> WRB S S | NP VP
-  NP -> Det NNS | Det RBS JJS NNS | Det JJS NNS | PP
-  VP -> VBZ VBN | VBZ COD | VBZ VBN COD
-  COD ->  PP | JJ | JJ PP
+
+
+grm = """
+  L -> NP VP
+  NP -> DT NOMS PP | DT RBS JJS NOMS | DT JJS NOMS | DT NOMS | NOMS
+  VP -> VERB VBN | VERB CO | VERB VBN CO | MD VB | MD VB VBN | MD VB VBN CO
+  VERB -> VBZ | VBP 
+  COD -> JJ | JJ PP
+  CO -> COD | COI
+  COI -> PP
   PP -> P NP | P
+  P -> TO | IN
   JJS -> JJ JJS | JJ 
   RBS -> RB RBS | RB
-  NNS -> NN NNS | NN
-  NP2 -> NN NP | RB NP2 |JJ NP2 | JJ
-  VBN -> """+recup_VBN(phrase)+
-  """\nDet -> 'an' | "the" | "a" | "all"
-  WRB -> "When"
-  RB ->  "only"
-  VBZ -> """+recup_VBZ(phrase)+
-  """\nP -> "via" | "on" | "in" | "to"
-  """+"""NN -> """+recup_NN(phrase)+
-   """\nJJ -> """+recup_JJ(phrase))
+  NOMS -> NOM NOMS | NOM
+  NOM -> NN | NNS | NNP | NNPS \n"""
 
-sent = phrase.split()
+grammar1 = nltk.CFG.fromstring("""
+     S -> WRB L L | WRB L L\n"""+
+  grm+add_tags(dico))
+
+def with_comma(p):
+    dico = dict()
+    tokens = nltk.word_tokenize(p)
+    dico = add_elem(dico,p)
+    c = -1
+    for i in range(0,len(tokens)-1):
+        if(tokens[i] == ','):
+            c = i
+            break
+    
+    if c!= -1:
+        grammar2 = nltk.CFG.fromstring(grm+add_tags(dico))
+        rd_parser = nltk.RecursiveDescentParser(grammar2)
+        trees = []
+        for tree in rd_parser.parse(tokens[1:c]):
+            trees = trees + [tree]
+        for tree in rd_parser.parse(tokens[c+1:]):
+            trees = trees + [tree]
+
+        tree1 = nltk.Tree('WRB', ['When'])
+        tree = nltk.Tree('S',[tree1]+trees)
+        tree.draw()
+
+
+
+sent = phrase2.split()
 rd_parser = nltk.RecursiveDescentParser(grammar1)    
-for tree in rd_parser.parse(sent):
-    tree.draw() 
+#for tree in rd_parser.parse(sent):
+ #   tree.draw() 
+
+with_comma(phrase5)
