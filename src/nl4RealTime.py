@@ -23,9 +23,9 @@ grm = """
   NOM -> NN | NNS | NNP | NNPS 
   COMMA -> ',' \n"""
 
-#remove unneccessary characters in the sentence such as '.', '-' that may induce confusion to the nltk tool
-def purge(sentence):
-    remove_hyphen = sentence.split('-')
+#remove unneccessary characters in the statement such as '.', '-' that may induce confusion to the nltk tool
+def purge(statement):
+    remove_hyphen = statement.split('-')
     no_hyphen = ''.join(remove_hyphen)
     remove_dot = no_hyphen.split('.')
     no_dot = ''.join(remove_dot)
@@ -43,10 +43,10 @@ def get_comma_position(tokens):
             break
     return c
 
-#tokenize the sentence
-def tokenize(sentence):
+#tokenize the statement
+def tokenize(statement):
     tokenizer = WordPunctTokenizer()
-    tokens = tokenizer.tokenize(sentence)
+    tokens = tokenizer.tokenize(statement)
     return tokens
 
 # add an word as an terminal symbol to the dictionnary in their rightful labels
@@ -70,7 +70,7 @@ def add_rule(tag,dico):
     else:
         return ""
 
-#create a string containing the set of rules of all terminal symbols we found in the sentence 
+#create a string containing the set of rules of all terminal symbols we found in the statement 
 def add_all_rules(dico):
     res =""
     for t in dico:
@@ -81,7 +81,6 @@ def add_all_rules(dico):
 def parse(dico,tokens):
     tags = nltk.pos_tag(tokens)   
     dico = add_elem(dico,tags)
-    print(tags)
 
     # first we add all the terminals symbols to the grammar
     grammar = nltk.CFG.fromstring(grm+add_all_rules(dico))
@@ -104,23 +103,24 @@ example = {
 }
 
 # FOR TESTING ONLY : function that determines the pos_tags given by nltk.pos_tag
-def test_get_pos_tag(sentence):
+def test_get_pos_tag(statement):
     tokenizer = WordPunctTokenizer()
-    tokens = tokenizer.tokenize(sentence)
+    tokens = tokenizer.tokenize(statement)
     tags = nltk.pos_tag(tokens)   
     print(tags)
 
 
 def main(argv):
     try:
-        sentence = example.get(str(argv[1]))
+        # 
+        statement = example.get(str(argv[1]))
 
-        #create dict 
+        #create dictionnary used for constructing the grammar 
         dico = dict()
 
         #lexical analysis
-        pure_sentence = purge(sentence)
-        tokens = tokenize(pure_sentence)
+        pure_statement = purge(statement)
+        tokens = tokenize(pure_statement)
 
         #syntax analysis
         parse(dico,tokens)

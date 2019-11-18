@@ -6,18 +6,36 @@ Système de traduction de langue naturelle pour les énoncés d’informatique t
 - Installer Python 2.7, 3.5, 3.6, ou3.7
 - Installer la libraire nltk : pip install --user -U nltk
 - Dans l'interpréteur python : 
+
     >> import nltk
 
     >> nltk.download('punkt')
 
     >> nltk.download('averaged_perceptron_tagger')
 
+- S'il manque toujours un module alors toujours dans l'interpréteur python :
+    
+    >> import nltk
+
+    >> nltk.download('nom_du_module_manquant')
+
 # Test
-python test_nltk.py
+
+Il existe 6 énoncés de tests disponibles.
+
+Pour tester un énoncé :
+
+    >>  python nl4RealTime.py n°enonce
+
+Par exemple pour tester l'énoncé 1 :
+
+    >> python nl4RealTime.py 1
+
+L'arbre syntaxique (en complément dans l'archive) devrait apparaître
 
 # GRAMMAIRE 
 
-Voici la signification des tokens définis ou qui seront utilisés dans la grammaire
+Voici la liste non-définitive des significations des tokens définis ou qui seront utilisés dans la grammaire
 
     ACTION combination of NP and VP
     CC coordinating conjunction
