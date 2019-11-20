@@ -10,8 +10,9 @@ grm = """
   RES -> ACTION | RB ACTION
   ACTION -> NP VP
   NP -> DT NOMS PP | DT RBS JJS NOMS | DT JJS NOMS | DT NOMS | NOMS  
-  VP -> VERB VBN | VERB CO | VERB VBN CO | MD VB | MD VB VBN | MD VB VBN CO | VERB
-  VERB -> VBZ | VBP 
+  VP -> VERB VBN | VERB CO | VERB VBN CO | MODAL VB | MODAL VB VBN | MODAL VB VBN CO | VERB VB CO | MODAL
+  VERB -> VBZ | VBP | VBZ NOT | VBP NOT 
+  MODAL -> MD | MD NOT
   CO -> COD | COI
   COD -> JJ | JJ PP | NP
   COI -> PP
@@ -23,16 +24,51 @@ grm = """
   NOM -> NN | NNS | NNP | NNPS 
   COMMA -> ',' \n"""
 
-#remove unneccessary characters in the statement such as '.', '-' that may induce confusion to the nltk tool
+# remove unneccessary characters in the statement such as '.', '-' that may induce confusion to the nltk tool
 def purge(statement):
+
+    # remove hyphen
     remove_hyphen = statement.split('-')
     no_hyphen = ''.join(remove_hyphen)
+
+    # remove dot
     remove_dot = no_hyphen.split('.')
     no_dot = ''.join(remove_dot)
-    remove_apostrophe =  no_dot.split('\'')
+
+    # remove contraction of negative form
+    no_contraction = negation(no_dot)
+    
+    # remove apostrophe
+    remove_apostrophe =  no_contraction.split('\'')
     no_apostrophe = ''.join(remove_apostrophe)
+
     ret = no_apostrophe
     return ret
+
+# reformulate the statement without contraction of a negative verb
+def negation(statement):
+    list =  statement.split(' ')
+    new_list = []
+
+    for w in list:
+        
+        if 'won\'t' == w:
+            new_list.append('will')
+            new_list.append('not')
+        elif 'n\'t' in w:
+            new_list.append(w[0:-3])
+            new_list.append('not')
+        else:
+            new_list.append(w)
+    s = ""
+    for w in new_list:
+        s+= w+" "
+
+    print(s)
+    return s
+
+   
+
 
 #return the position of the comma character ',' if it exists
 def get_comma_position(tokens):
@@ -52,7 +88,9 @@ def tokenize(statement):
 # add an word as an terminal symbol to the dictionnary in their rightful labels
 def add_elem(d,tags):
     for (w,t) in tags:
-        if t not in d:   
+        if w == 'not':
+            d['NOT'] =[w]        
+        elif t not in d:   
             if t.isalpha():
                 d[t] = [w]
         else:
@@ -82,6 +120,8 @@ def parse(dico,tokens):
     tags = nltk.pos_tag(tokens)   
     dico = add_elem(dico,tags)
 
+    print(dico)
+
     # first we add all the terminals symbols to the grammar
     grammar = nltk.CFG.fromstring(grm+add_all_rules(dico))
      # then we execute a bottom up parsing 
@@ -99,7 +139,7 @@ example = {
     "3" : "When a match is found all fields are filled in",
     "4" : "When a connection is made to the POP server, mail will be transferred to the local machine",
     "5" : "When the name of a mailbox is double-clicked, that mailbox will be opened.",
-    "6" : "If users load data, then the information window will pop-up",
+    "6" : "If users don't load data, then the information window won't pop-up",
 }
 
 # FOR TESTING ONLY : function that determines the pos_tags given by nltk.pos_tag
@@ -112,7 +152,7 @@ def test_get_pos_tag(statement):
 
 def main(argv):
     try:
-        # 
+        #get the statement to parse
         statement = example.get(str(argv[1]))
 
         #create dictionnary used for constructing the grammar 
@@ -133,3 +173,4 @@ def main(argv):
 
 main(sys.argv)
 #test_get_pos_tag(example.get("6")) 
+#negation(example.get("6")) 
