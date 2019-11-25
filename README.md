@@ -3,7 +3,8 @@ Système de traduction de langue naturelle pour les énoncés d’informatique t
 
 # Installation
 
-- Installer Python 2.7, 3.5, 3.6, ou3.7
+- Installer Python 3.5, 3.6, ou 3.7
+- Installer Tk : apt-get install python3-tk
 - Installer la libraire nltk : pip install --user -U nltk
 - Dans l'interpréteur python : 
 
