@@ -2,6 +2,7 @@ import nltk
 import sys
 
 from nltk import WordPunctTokenizer
+from nltk.tree import *
 
 #definition of the grammar for parsing the tokens 
 grm = """
@@ -42,6 +43,7 @@ def purge(statement):
     remove_apostrophe =  no_contraction.split('\'')
     no_apostrophe = ''.join(remove_apostrophe)
 
+    # return result
     ret = no_apostrophe
     return ret
 
@@ -64,11 +66,7 @@ def negation(statement):
     for w in new_list:
         s+= w+" "
 
-    print(s)
     return s
-
-   
-
 
 #return the position of the comma character ',' if it exists
 def get_comma_position(tokens):
@@ -120,17 +118,66 @@ def parse(dico,tokens):
     tags = nltk.pos_tag(tokens)   
     dico = add_elem(dico,tags)
 
-    print(dico)
-
     # first we add all the terminals symbols to the grammar
     grammar = nltk.CFG.fromstring(grm+add_all_rules(dico))
      # then we execute a bottom up parsing 
     rd_parser = nltk.BottomUpChartParser(grammar)
 
+    # storing the parse tree generated
+    trees = rd_parser.parse(tokens)
+
     # displaying the parse tree generated
-    for tree in rd_parser.parse(tokens):
-        tree.draw() 
-        
+    #there is a for loop but it only contains one tree, hence we return the tree in the for loop
+    for tree in trees:
+        try:
+            tree.draw() 
+            return tree
+        except:
+            print("Issue with parsing")
+      
+
+
+    # returning the parse tree
+    return trees
+
+# Evaluate from S (<-> Start) Node
+def evaluate(tree):
+    # the to-be result
+    logic_formula = ""
+
+    # a field for counting
+    i = 0
+
+    # number of children node -- be careful, do not mix up with subtrees  
+    children_size = len(tree)
+
+    # get the label of the current node
+    current_node_label = tree.label()
+
+    # begin the evaluation of all children from left to right (it is the right order)
+    while i < children_size:
+        # get the i-th child's label
+        child_label = tree[i].label() 
+
+        # test
+        # print(child_label)
+
+        # match the label an existing TOKEN or it doesn't exist
+        if child_label == 'COND':
+            print('c')
+        elif child_label == 'COMMA':
+            print(',')
+        elif child_label == 'RES':
+            print('r')
+        else :
+            print('Label doesn\'t match with TOKEN. Exiting program')
+            sys.exit()
+
+        #incrementing
+        i = i+1
+
+    return logic_formula
+    
 
 #set of examples for unit testing
 example = {
@@ -151,23 +198,29 @@ def test_get_pos_tag(statement):
 
 
 def main(argv):
-    try:
-        #get the statement to parse
-        statement = example.get(str(argv[1]))
 
-        #create dictionnary used for constructing the grammar 
-        dico = dict()
-
-        #lexical analysis
-        pure_statement = purge(statement)
-        tokens = tokenize(pure_statement)
-
-        #syntax analysis
-        parse(dico,tokens)
+    # get the statement to parse
+    statement = example.get(str(argv[1]))
     
-    except:
-        print("usage : python nl4rRealTime.py test_number\n ex : python nl4RealTime.py 5\n test_number range from 1 to 6")
-        sys.exit()
+    # create dictionnary used for constructing the grammar 
+    dico = dict()
+
+    # lexical analysis
+    pure_statement = purge(statement)
+    tokens = tokenize(pure_statement)
+
+    # syntax analysis
+    tree = parse(dico,tokens)
+    
+    # semantic analysis
+    evaluate(tree) 
+
+
+
+    
+ #   except:
+ #       print("usage : python nl4rRealTime.py test_number\n ex : python nl4RealTime.py 5\n test_number range from 1 to 6")
+ #       sys.exit()
 
 
 
