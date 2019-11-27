@@ -10,20 +10,21 @@ grm = """
   S -> COND COMMA RES | COND RES
   COND -> WRB ACTION | IF ACTION
   RES -> ACTION | THEN ACTION
-  ACTION -> NP VP
-  NP -> DT NOMS PP | DT RBS JJS NOMS | DT JJS NOMS | DT NOMS | NOMS  
+  ACTION -> NP VP | NP VP AND ACTION | NP VP OR ACTION| VP AND ACTION | VP OR ACTION | VP
+  NP -> DT NOMS PP | DT ADVERBS ADJECTIVES NOMS | DT ADJECTIVES NOMS  | ADJECTIVES NOMS | DT NOMS | NOMS | DT NOMS GERUND 
   VP -> VERB VBN | VERB CO | VERB VBN CO | MODAL VB | MODAL VB VBN | MODAL VB VBN CO | VERB VB CO | MODAL
-  VERB -> VBZ | VBP | VBZ NOT | VBP NOT 
+  VERB -> VB | VBZ | VBP | VBZ NOT | VBP NOT 
   MODAL -> MD | MD NOT
   CO -> COD | COI
-  COD -> JJ | JJ PP | NP
+  COD -> JJ | JJ PP | NP | NP COI
   COI -> PP
   PP -> P NP | P
   P -> TO | IN
-  JJS -> JJ JJS | JJ 
-  RBS -> RB RBS | RB
+  ADJECTIVES -> JJ ADJECTIVES | JJ 
+  ADVERBS -> RB ADVERB | RB
   NOMS -> NOM NOMS | NOM
   NOM -> NN | NNS | NNP | NNPS 
+  GERUND -> VBG | VBG CO
   COMMA -> ',' \n"""
 
 # remove unneccessary characters in the statement such as '.', '-' that may induce confusion to the nltk tool
@@ -94,6 +95,10 @@ def add_elem(d,tags):
             d['IF'] =[w]
         elif w == 'then' or w == 'Then' or w == 'THEN':
             d['THEN'] =[w]    
+        elif w == 'Or' or w == 'or' or w == 'OR':
+            d['OR'] =[w]
+        elif w == 'And' or w == 'and' or w == 'AND':
+            d['AND'] =[w]     
         elif t not in d:   
             if t.isalpha():
                 d[t] = [w]
@@ -124,6 +129,9 @@ def parse(dico,tokens):
     tags = nltk.pos_tag(tokens)   
     dico = add_elem(dico,tags)
 
+    print("")
+    print(dico)
+
     # first we add all the terminals symbols to the grammar
     grammar = nltk.CFG.fromstring(grm+add_all_rules(dico))
      # then we execute a bottom up parsing 
@@ -136,7 +144,7 @@ def parse(dico,tokens):
     #there is a for loop but it only contains one tree, hence we return the tree in the for loop
     for tree in trees:
         try:
-           # tree.draw() 
+            tree.draw() 
             return tree
         except:
             print("Issue with parsing")
@@ -148,16 +156,17 @@ def parse(dico,tokens):
 
 #set of examples for unit testing
 example = {
-    "1" : "When an error message is displayed the only available user action is acknowledgement via the 'ok' button",
+    "1" : "When an error message is displayed or the message is on screen the only available user action is acknowledgement via the 'ok' button",
     "2" : "When the cancel button on the identify traveler screen is pressed control returns to the main menu screen" ,
     "3" : "When a match is found all fields are filled in",
     "4" : "When a connection is made to the POP server, mail will be transferred to the local machine",
     "5" : "When the name of a mailbox is double-clicked, that mailbox will be opened.",
-    "6" : "If users don't load data, then the information window won't pop-up",
+    "6" : "When a connection is not made to the server, report an error and reset network component to initial state.",
 }
 
 # FOR TESTING ONLY : function that determines the pos_tags given by nltk.pos_tag
 def test_get_pos_tag(statement):
+    print(statement)
     tokenizer = WordPunctTokenizer()
     tokens = tokenizer.tokenize(statement)
     tags = nltk.pos_tag(tokens)   
@@ -168,6 +177,8 @@ def main(argv):
 
     # get the statement to parse
     statement = example.get(str(argv[1]))
+
+    test_get_pos_tag(statement)
     
     # create dictionnary used for constructing the grammar 
     dico = dict()
