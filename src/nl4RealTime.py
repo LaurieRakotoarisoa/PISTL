@@ -1,5 +1,6 @@
 import nltk
 import sys
+import evaluation
 
 from nltk import WordPunctTokenizer
 from nltk.tree import *
@@ -7,8 +8,8 @@ from nltk.tree import *
 #definition of the grammar for parsing the tokens 
 grm = """
   S -> COND COMMA RES | COND RES
-  COND -> WRB ACTION | IN ACTION
-  RES -> ACTION | RB ACTION
+  COND -> WRB ACTION | IF ACTION
+  RES -> ACTION | THEN ACTION
   ACTION -> NP VP
   NP -> DT NOMS PP | DT RBS JJS NOMS | DT JJS NOMS | DT NOMS | NOMS  
   VP -> VERB VBN | VERB CO | VERB VBN CO | MODAL VB | MODAL VB VBN | MODAL VB VBN CO | VERB VB CO | MODAL
@@ -69,6 +70,7 @@ def negation(statement):
     return s
 
 #return the position of the comma character ',' if it exists
+# it is not being used right now but it can be later
 def get_comma_position(tokens):
     c=-1
     for i in range(0,len(tokens)-1):
@@ -87,7 +89,11 @@ def tokenize(statement):
 def add_elem(d,tags):
     for (w,t) in tags:
         if w == 'not':
-            d['NOT'] =[w]        
+            d['NOT'] =[w]
+        elif w == 'If' or w == 'if' or w == 'IF':
+            d['IF'] =[w]
+        elif w == 'then' or w == 'Then' or w == 'THEN':
+            d['THEN'] =[w]    
         elif t not in d:   
             if t.isalpha():
                 d[t] = [w]
@@ -130,7 +136,7 @@ def parse(dico,tokens):
     #there is a for loop but it only contains one tree, hence we return the tree in the for loop
     for tree in trees:
         try:
-            tree.draw() 
+           # tree.draw() 
             return tree
         except:
             print("Issue with parsing")
@@ -139,45 +145,6 @@ def parse(dico,tokens):
 
     # returning the parse tree
     return trees
-
-# Evaluate from S (<-> Start) Node
-def evaluate(tree):
-    # the to-be result
-    logic_formula = ""
-
-    # a field for counting
-    i = 0
-
-    # number of children node -- be careful, do not mix up with subtrees  
-    children_size = len(tree)
-
-    # get the label of the current node
-    current_node_label = tree.label()
-
-    # begin the evaluation of all children from left to right (it is the right order)
-    while i < children_size:
-        # get the i-th child's label
-        child_label = tree[i].label() 
-
-        # test
-        # print(child_label)
-
-        # match the label an existing TOKEN or it doesn't exist
-        if child_label == 'COND':
-            print('c')
-        elif child_label == 'COMMA':
-            print(',')
-        elif child_label == 'RES':
-            print('r')
-        else :
-            print('Label doesn\'t match with TOKEN. Exiting program')
-            sys.exit()
-
-        #incrementing
-        i = i+1
-
-    return logic_formula
-    
 
 #set of examples for unit testing
 example = {
@@ -213,8 +180,10 @@ def main(argv):
     tree = parse(dico,tokens)
     
     # semantic analysis
-    evaluate(tree) 
+    formula = evaluation.evaluate(tree) 
 
+    # printing result
+    print(formula)
 
 
     
