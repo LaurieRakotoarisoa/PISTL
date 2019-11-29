@@ -147,10 +147,10 @@ def evaluate_vp(tree):
              vp += vbn
         elif child_label == 'CO':
             pass
-           # np += evaluate_pp(tree[i])
+        elif child_label == 'VB':
+            pass
         elif child_label == 'MODAL':
             pass
-           # np += evaluate_adjectives(tree[i])
         else :
             print(tree[i].label())
             print('Label doesn\'t match with any TOKEN in VP. Exiting program')
@@ -186,7 +186,7 @@ def evaluate_nom(tree):
         if child_label == 'NN' or child_label == 'NNS'or child_label == 'NNP'or child_label == 'NNPS' :
             l = tree[i].leaves()
             for n in l:
-             nom += n+"_"
+             nom += n  
         else :
             print(tree[i].label())
             print('Label doesn\'t match with any TOKEN in NOM. Exiting program')
@@ -201,11 +201,11 @@ def evaluate_verb(tree):
     current_node_label = tree.label()
     while i < children_size:
         child_label = tree[i].label()
-        if child_label == 'VB' or child_label == 'VBZ'or child_label == 'VBP' :
+        if child_label == 'VB' or child_label == 'VBZ' or child_label == 'VBP' :
             l = tree[i].leaves()
             for v in l:
                 if v != 'is':
-                    verb += v+"_"
+                    verb += v
         elif child_label == 'NOT':
             verb = '!'+verb
         else :
