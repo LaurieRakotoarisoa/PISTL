@@ -1,6 +1,7 @@
 import nltk
 import sys
 import evaluation
+from pathlib import Path
 
 from nltk import WordPunctTokenizer
 from nltk.tree import *
@@ -15,9 +16,8 @@ grm = """
   VP -> VERB VBN | VERB CO | VERB VBN CO | MODAL VB | MODAL VB VBN | MODAL VB VBN CO | VERB VB CO | MODAL
   VERB -> VB | VBZ | VBP | VBZ NOT | VBP NOT 
   MODAL -> MD | MD NOT
-  CO -> COD | COI
-  COD -> JJ | JJ PP | NP | NP COI
-  COI -> PP
+  CO -> COD | PP
+  COD -> ADJECTIVES | ADJECTIVES PP | NP | NP PP
   PP -> P NP | P
   P -> TO | IN
   ADJECTIVES -> JJ ADJECTIVES | JJ 
@@ -45,8 +45,12 @@ def purge(statement):
     remove_apostrophe =  no_contraction.split('\'')
     no_apostrophe = ''.join(remove_apostrophe)
 
+    # remove end of line
+    remove_eol =  no_apostrophe.split('\n''')
+    no_eol = ''.join(remove_eol)
+
     # return result
-    ret = no_apostrophe
+    ret = no_eol
     return ret
 
 # reformulate the statement without contraction of a negative verb
@@ -69,16 +73,6 @@ def negation(statement):
         s+= w+" "
 
     return s
-
-#return the position of the comma character ',' if it exists
-# it is not being used right now but it can be later
-def get_comma_position(tokens):
-    c=-1
-    for i in range(0,len(tokens)-1):
-        if(tokens[i] == ','):
-            c = i
-            break
-    return c
 
 #tokenize the statement
 def tokenize(statement):
@@ -129,8 +123,7 @@ def parse(dico,tokens):
     tags = nltk.pos_tag(tokens)   
     dico = add_elem(dico,tags)
 
-    print("")
-    print(dico)
+   # print(dico)
 
     # first we add all the terminals symbols to the grammar
     grammar = nltk.CFG.fromstring(grm+add_all_rules(dico))
@@ -144,7 +137,7 @@ def parse(dico,tokens):
     #there is a for loop but it only contains one tree, hence we return the tree in the for loop
     for tree in trees:
         try:
-            tree.draw() 
+         #   tree.draw() 
             return tree
         except:
             print("Issue with parsing")
@@ -155,14 +148,14 @@ def parse(dico,tokens):
     return trees
 
 #set of examples for unit testing
-example = {
-    "1" : "When an error message is displayed or the message is on screen the only available user action is acknowledgement via the 'ok' button",
-    "2" : "When the cancel button on the identify traveler screen is pressed control returns to the main menu screen" ,
-    "3" : "When a match is found all fields are filled in",
-    "4" : "When a connection is made to the POP server, mail will be transferred to the local machine",
-    "5" : "When the name of a mailbox is double-clicked, that mailbox will be opened.",
-    "6" : "When a connection is not made to the server, report an error and reset network component to initial state.",
-}
+#example = {
+#    "1" : "When an error message is displayed or the message is on screen the only available user action is acknowledgement via the 'ok' button",
+#    "2" : "When the cancel button on the identify traveler screen is pressed control returns to the main menu screen" ,
+#    "3" : "When a match is found all fields are filled in",
+#    "4" : "When a connection is made to the POP server, mail will be transferred to the local machine",
+#    "5" : "When the name of a mailbox is double-clicked, that mailbox will be opened.",
+#    "6" : "When a connection is not made to the server, report an error and reset network component to initial state.",
+#}
 
 # FOR TESTING ONLY : function that determines the pos_tags given by nltk.pos_tag
 def test_get_pos_tag(statement):
@@ -175,26 +168,35 @@ def test_get_pos_tag(statement):
 
 def main(argv):
 
-    # get the statement to parse
-    statement = example.get(str(argv[1]))
-
-    test_get_pos_tag(statement)
+    #read set of examples
+    contents = Path("exemple.txt").read_text()
+    statements = contents.split(';')
     
-    # create dictionnary used for constructing the grammar 
-    dico = dict()
+    for statement in statements:
+        
+        if statement != '' :
+            # get the statement to parse
+            #statement = example.get(str(argv[1]))
 
-    # lexical analysis
-    pure_statement = purge(statement)
-    tokens = tokenize(pure_statement)
 
-    # syntax analysis
-    tree = parse(dico,tokens)
-    
-    # semantic analysis
-    formula = evaluation.evaluate(tree) 
+            #test_get_pos_tag(statement)
+            
+            # create dictionnary used for constructing the grammar 
+            dico = dict()
 
-    # printing result
-    print(formula)
+            # lexical analysis
+            pure_statement = purge(statement)
+           
+            tokens = tokenize(pure_statement)
+
+            # syntax analysis
+            tree = parse(dico,tokens)
+            
+            # semantic analysis
+            formula = evaluation.evaluate(tree) 
+
+            # printing result
+            print(pure_statement+'\n'+formula+'\n')
 
 
     

@@ -1,0 +1,11 @@
+When an error message is displayed or the message is on screen the only available user action is acknowledgement via the 'ok' button
+;
+When the cancel button on the identify traveler screen is pressed control returns to the main menu screen
+;
+When a match is found, all fields are filled in
+;
+When a connection is made to the POP server, mail will be transferred to the local machine
+;
+When the name of a mailbox is double-clicked, that mailbox will be opened.
+;
+When a connection is not made to the server, report an error and reset network component to initial state.
