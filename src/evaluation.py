@@ -50,6 +50,9 @@ def apply_temporal_logic(formula):
     if if_unary == True:
         tmp1 = formula.split("->")[0]
         tmp2 = formula.split('->')[1]
+        if tmp2.endswith(')'):
+            tmp2 = tmp2[0:-1]
+            tmp1 = tmp1+")"
         formula = tmp2 + " -> " + tmp1
         if_unary = False      
 
@@ -67,9 +70,14 @@ def apply_temporal_logic(formula):
     if x == True:
         formula = "X("+formula+")"
         x= False
-    
- 
 
+    return formula
+
+def apply_next(formula):
+    global x 
+    if x == True:
+        formula = "X("+formula+")"
+        x= False
     return formula
 
 # Evaluate from S (<-> Start) Node
@@ -171,6 +179,7 @@ def evaluate_action(tree):
             action += evaluate_vp(tree[i])
         elif child_label == 'ACTION':
             action += evaluate_action(tree[i])
+            action = apply_next(action)
         elif child_label == 'OP_L' : 
             action += evaluate_op_l(tree[i])
         else :
@@ -205,6 +214,7 @@ def evaluate_op_l(tree):
             for w in l :
                 if w == 'whenever' or w == 'always ':
                     always = True
+                    if_unary = True
                     op += " -> "
         elif child_label == 'IF':
             l = tree[i].leaves()
@@ -223,7 +233,6 @@ def evaluate_op_l(tree):
 def evaluate_np(tree):
     np = ""
     i = 0  
-    all = False
     children_size = len(tree)
     while i < children_size:
         child_label = tree[i].label()
@@ -371,6 +380,8 @@ def evaluate_verb(tree):
 def evaluate_adverbs(tree):
     adv = ""
     i = 0  
+    global always
+    global negation
     children_size = len(tree)
     while i < children_size:
         child_label = tree[i].label()
@@ -378,11 +389,14 @@ def evaluate_adverbs(tree):
             l = tree[i].leaves()
             for w in l :
                 if w == 'always':
-                    global always
                     always = True
                 if w in f_arr:
                     global f
                     f = True
+                if w == 'never':
+                    always = True
+                    negation = True
+                    
 
         elif child_label == 'ADVERBS':
             adv += evaluate_adverbs(tree[i])
