@@ -80,6 +80,15 @@ def apply_next(formula):
         x= False
     return formula
 
+def apply_finally(formula):
+    global f
+    if f == True:
+        formula = "F("+formula+")"
+        f = False
+    return formula
+
+
+
 # Evaluate from S (<-> Start) Node
 def evaluate(tree):
     # the to-be result   
@@ -138,6 +147,8 @@ def evaluate_cond(tree):
             always = True
         elif child_label == 'ACTION':
             cond += evaluate_action(tree[i])
+            cond = apply_next(cond)
+            cond = apply_finally(cond)
         else :
             print('Label doesn\'t match with any TOKEN in COND. Exiting program')
             sys.exit()
@@ -152,7 +163,9 @@ def evaluate_res(tree):
     while i < children_size:
         child_label = tree[i].label()
         if child_label == 'ACTION':
-            res += evaluate_action(tree[i])
+            res += evaluate_action(tree[i]) 
+            res = apply_next(res)
+            res = apply_finally(res)
         elif child_label == 'THEN':
             pass
         else :
@@ -180,6 +193,7 @@ def evaluate_action(tree):
         elif child_label == 'ACTION':
             action += evaluate_action(tree[i])
             action = apply_next(action)
+            action = apply_finally(action)
         elif child_label == 'OP_L' : 
             action += evaluate_op_l(tree[i])
         else :

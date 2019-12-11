@@ -62,4 +62,6 @@ When the name of a mailbox is double-clicked, that mailbox will be opened.
 ;
 When a connection is not made to the server, report an error and reset network component to initial state.
 ; 
-When STATE is 20, ACTIVE holds ultimately.
+When STATE is  20, ACTIVE holds ultimately.
+;
+When STATE is not  eventually 20, ACTIVE holds ultimately.
