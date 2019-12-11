@@ -1,3 +1,29 @@
+CLOCK is less than STATE-1.
+;
+VAR is greater than MIN.
+;
+REACT and STOP .
+;
+DEADLOCK is false.
+;
+DEADLOCK does not hold.
+;
+STATUS equals ACTIVE.
+;
+STATUS is equal to ACTIVE.
+;
+VAR is not equal to 13.
+;
+PHI and PSY.
+;
+PHI or PSY.
+;
+PSY whenever PHI.
+;
+PSY if PHI.
+;
+LIVE if FLAG is 0.
+;
 When an error message is displayed or the message is on screen the only available user action is acknowledgement via the 'ok' button
 ;
 When the cancel button on the identify traveler screen is pressed control returns to the main menu screen
