@@ -16,6 +16,7 @@ if_unary = False
 
 #tricky one : its purpose is to break the ambiguity with 'is' that may be equivalent to 'equals'
 is_equal = False
+is_cd = False
 
 #check if there are 'all' events
 a = False
@@ -276,6 +277,12 @@ def evaluate_vp(tree):
             sys.exit()
         i = i+1
 
+    global is_equal
+    global is_cd
+
+    if is_equal == True and is_cd == True :
+        vp = vp.replace('.','=')
+
     return vp
 
 def evaluate_noms(tree):
@@ -305,6 +312,9 @@ def evaluate_nom(tree):
         child_label = tree[i].label()
         if child_label in arr_nom:
             l = tree[i].leaves()
+            if child_label == 'CD':
+                global is_cd
+                is_cd = True
             for n in l:
              if n == 'equals' :
                 nom += " = "
@@ -320,22 +330,29 @@ def evaluate_nom(tree):
 def evaluate_verb(tree):
     verb = ""
     i = 0  
-    
+    global is_equal
     children_size = len(tree)
     while i < children_size:
         child_label = tree[i].label()
         if child_label == 'VB' or child_label == 'VBZ' or child_label == 'VBP' :
             l = tree[i].leaves()
             for v in l:
-                if v == 'is' or v == 'does':
+                if v == 'is' :
+                    is_equal = True
+                    verb += "."
+                elif v == 'does':
+                    is_equal = False
                     verb += "."
                 elif v == 'equals' or v == 'equal' :
+                    is_equal = False
                     verb += " = "
                 elif 'hold' in v:
+                    is_equal = False
                     pass
                 else:         
                     if v.endswith('s'):
                         v = v[0:-1]
+                    is_equal = False
                     verb += "."+v        
         elif child_label == 'NOM':
             verb += evaluate_nom(tree[i])        
@@ -421,6 +438,8 @@ def evaluate_cod(tree):
 def evaluate_adjectives(tree):
     adj = ""
     i = 0  
+    global is_equal
+    is_equal = False
     children_size = len(tree)
     while i < children_size:
         child_label = tree[i].label()
@@ -517,7 +536,8 @@ def evaluate_comp(tree):
     comp = ""
     i = 0  
     children_size = len(tree)
-
+    global is_equal
+    is_equal = False
     while i < children_size:
         child_label = tree[i].label()
         if child_label == 'JJR':
