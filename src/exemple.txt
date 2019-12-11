@@ -1,6 +1,58 @@
-When an error message is displayed or the message is on screen the only available user action is acknowledgement via the 'ok' button
+CLOCK is less than STATE-1.
 ;
-When the cancel button on the identify traveler screen is pressed control returns to the main menu screen
+VAR is greater than MIN.
+;
+REACT and STOP .
+;
+DEADLOCK is false.
+;
+DEADLOCK does not hold.
+;
+STATUS equals ACTIVE.
+;
+STATUS is equal to ACTIVE.
+;
+VAR is not equal to 13.
+;
+PHI and PSY.
+;
+PHI or PSY.
+;
+PSY whenever PHI.
+;
+PSY if PHI.
+;
+STATUS always equals 3.
+;
+ACTIVE eventually holds.
+;
+STATE is ultimately 0 .
+;
+ACTIVE holds ultimately.
+;
+STATE is 20 until LIVE .
+;
+LIVE next.
+;
+PSY if PHI is greater than MIN and PHI equals ACTIVE
+;
+STATUS is always equal to STATE.
+;
+ACTIVE always holds.
+;
+PHI or PSY until STATUS is greater than MIN.
+;
+PSY and PHI next .
+;
+DEADLOCK never holds.
+;
+PSY whenever PHI holds.
+;
+CLOCK next whenever ACTIVE.
+;
+When an error message is displayed or the message is on screen, the only available user action is acknowledgement via the 'ok' button
+;
+When the cancel button on the identify traveler screen is pressed, control returns to the main menu screen
 ;
 When a match is found, all fields are filled in
 ;
@@ -9,3 +61,5 @@ When a connection is made to the POP server, mail will be transferred to the loc
 When the name of a mailbox is double-clicked, that mailbox will be opened.
 ;
 When a connection is not made to the server, report an error and reset network component to initial state.
+; 
+When STATE is 20, ACTIVE holds ultimately.

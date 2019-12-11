@@ -8,34 +8,38 @@ from nltk.tree import *
 
 #definition of the grammar for parsing the tokens 
 grm = """
-  S -> COND COMMA RES | COND RES
+  S -> COND COMMA RES | COND RES | ACTION
   COND -> WRB ACTION | IF ACTION
   RES -> ACTION | THEN ACTION
-  ACTION -> NP VP | NP VP AND ACTION | NP VP OR ACTION| VP AND ACTION | VP OR ACTION | VP
-  NP -> DT NOMS PP | DT ADVERBS ADJECTIVES NOMS | DT ADJECTIVES NOMS  | ADJECTIVES NOMS | DT NOMS | NOMS | DT NOMS GERUND 
-  VP -> VERB VBN | VERB CO | VERB VBN CO | MODAL VB | MODAL VB VBN | MODAL VB VBN CO | VERB VB CO | MODAL
-  VERB -> VB | VBZ | VBP | VBZ NOT | VBP NOT 
-  MODAL -> MD | MD NOT
-  CO -> COD | PP
-  COD -> ADJECTIVES | ADJECTIVES PP | NP | NP PP
-  PP -> P NP | P
-  P -> TO | IN
-  ADJECTIVES -> JJ ADJECTIVES | JJ 
+  ACTION -> NP VP | NP VP OP_L ACTION | VP OP_L ACTION | NP OP_L ACTION | VP | NP 
+  OP_L -> AND | OR | WRB | IF
+  NP -> NOMS | DT NOMS PP | DT ADVERBS ADJECTIVES NOMS | DT ADJECTIVES NOMS  | ADJECTIVES NOMS | DT NOMS |  DT NOMS GERUND 
+  VP -> VERB VBN | VERB CO | VERB VBN CO | MODAL VB | MODAL VB VBN | MODAL VB VBN CO | VERB VB CO | MODAL | VERB 
+  VERB -> VB | VBZ | VBP | VBZ NOT | VBP NOT  | VB NOT | NOM | ADVERBS VB | VB ADVERBS | ADVERBS VBZ | VBZ ADVERBS | ADVERBS VBP | VBP ADVERBS | ADVERBS VBZ NOT | ADVERBS VBP NOT | ADVERBS VB NOT | ADVERBS  NOM | VBZ NOT ADVERBS|  VBP NOT ADVERBS | VB NOT  ADVERBS| NOM ADVERBS
+  MODAL -> MD | MD NOT | MD ADVERBS | ADVERBS MD |  MD NOT ADVERBS | ADVERBS MD NOT 
+  CO -> COD | PP 
+  COD -> ADJECTIVES | ADJECTIVES PP | NP | NP PP  | VP 
+  PP -> P NP | P | P VP
+  P -> TO | IN 
+  ADJECTIVES -> JJ ADJECTIVES | JJ | MC | COMP | JJS
+  COMP -> JJR IN
   ADVERBS -> RB ADVERB | RB
-  NOMS -> NOM NOMS | NOM
-  NOM -> NN | NNS | NNP | NNPS 
+  NOMS -> NOM NOMS | NOM | MC
+  NOM -> NN | NNS | NNP | NNPS | CD 
+  MC -> NOMS HYPHEN NOMS | ADJECTIVES HYPHEN NOMS
   GERUND -> VBG | VBG CO
-  COMMA -> ',' \n"""
+  COMMA -> ','
+  HYPHEN -> '-' \n"""
 
 # remove unneccessary characters in the statement such as '.', '-' that may induce confusion to the nltk tool
 def purge(statement):
 
     # remove hyphen
-    remove_hyphen = statement.split('-')
-    no_hyphen = ''.join(remove_hyphen)
+   # remove_hyphen = statement.split('-')
+   # no_hyphen = ''.join(remove_hyphen)
 
     # remove dot
-    remove_dot = no_hyphen.split('.')
+    remove_dot = statement.split('.')
     no_dot = ''.join(remove_dot)
 
     # remove contraction of negative form
@@ -57,9 +61,7 @@ def purge(statement):
 def negation(statement):
     list =  statement.split(' ')
     new_list = []
-
     for w in list:
-        
         if 'won\'t' == w:
             new_list.append('will')
             new_list.append('not')
@@ -123,7 +125,7 @@ def parse(dico,tokens):
     tags = nltk.pos_tag(tokens)   
     dico = add_elem(dico,tags)
 
-   # print(dico)
+    #print(dico)
 
     # first we add all the terminals symbols to the grammar
     grammar = nltk.CFG.fromstring(grm+add_all_rules(dico))
@@ -137,7 +139,7 @@ def parse(dico,tokens):
     #there is a for loop but it only contains one tree, hence we return the tree in the for loop
     for tree in trees:
         try:
-         #   tree.draw() 
+            #tree.draw() 
             return tree
         except:
             print("Issue with parsing")
@@ -171,6 +173,7 @@ def main(argv):
     #read set of examples
     contents = Path("exemple.txt").read_text()
     statements = contents.split(';')
+    print("\n")
     
     for statement in statements:
         
