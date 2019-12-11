@@ -60,7 +60,7 @@ def apply_temporal_logic(formula):
 
     global f
     if f == True:
-        formula = "E("+formula+")"
+        formula = "F("+formula+")"
         f = False
 
     global x 
