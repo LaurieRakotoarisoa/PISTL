@@ -22,11 +22,21 @@ PSY whenever PHI.
 ;
 PSY if PHI.
 ;
-LIVE if FLAG is 0.
+STATUS always equals 3.
 ;
-When an error message is displayed or the message is on screen the only available user action is acknowledgement via the 'ok' button
+ACTIVE eventually holds.
 ;
-When the cancel button on the identify traveler screen is pressed control returns to the main menu screen
+STATE is ultimately 0 .
+;
+ACTIVE holds ultimately.
+;
+STATE is 20 until LIVE .
+;
+LIVE next.
+;
+When an error message is displayed or the message is on screen, the only available user action is acknowledgement via the 'ok' button
+;
+When the cancel button on the identify traveler screen is pressed, control returns to the main menu screen
 ;
 When a match is found, all fields are filled in
 ;

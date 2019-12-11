@@ -2,13 +2,74 @@ import nltk
 import sys
 from nltk.tree import *
 
+
+#global variable 
+
+#check if there's negation
 negation = False
 
-when = False
+#check if there arekeywords referring to 'always' event
+always = False
 
-if_only = False
+#check  if there's only one 'if' 
+if_unary = False
 
+#tricky one : its purpose is to break the ambiguity with 'is' that may be equivalent to 'equals'
 is_equal = False
+
+#check if there are 'all' events
+a = False
+
+
+#check if there are keywords referring to 'F' event (eventually, finally, ultimately)
+f = False
+
+#check if there are keywords referring to 'X' event (next)
+x = False
+
+#keywords shortcut
+
+#grammar
+arr_nom = ['NN','NNS','NNP','NNPS','CD']
+
+#logic
+arr_sup = ['bigger','greater','large','larger','superior','more']
+arr_inf = ['smaller','inferior','less']
+arr_eq = ['equal', 'identical']
+
+#temporal
+u_arr = ['until','unless']
+f_arr = ['eventually','ultimately','finally']
+x_arr = ['next']
+all_arr = ['all','every']
+
+
+def apply_temporal_logic(formula):
+    global if_unary
+    if if_unary == True:
+        tmp1 = formula.split("->")[0]
+        tmp2 = formula.split('->')[1]
+        formula = tmp2 + " -> " + tmp1
+        if_unary = False      
+
+    global always
+    if always == True:
+        formula = "AG("+formula+")"
+        always = False
+
+    global f
+    if f == True:
+        formula = "E("+formula+")"
+        f = False
+
+    global x 
+    if x == True:
+        formula = "X("+formula+")"
+        x= False
+    
+ 
+
+    return formula
 
 # Evaluate from S (<-> Start) Node
 def evaluate(tree):
@@ -46,19 +107,11 @@ def evaluate(tree):
         #incrementing
         i = i+1
 
+    # if we found any temporal logics keywords then we have to add them to the formula
+    logic_formula = apply_temporal_logic(logic_formula)
 
-    global if_only
-    if if_only == True:
-        tmp1 = logic_formula.split("->")[0]
-        tmp2 = logic_formula.split('->')[1]
-        logic_formula = tmp2 + " -> " + tmp1
-        if_only = False      
-
-    global when
-    if when == True:
-        logic_formula = "AG("+logic_formula+")"
-        when = False
-
+    logic_formula = logic_formula.replace(' .','')
+    logic_formula = logic_formula.replace('=.','= ')
     return logic_formula.replace('.)',')').replace('.=','=').replace('. ',' ').replace(' .',' ')
     
     
@@ -66,37 +119,43 @@ def evaluate(tree):
 def evaluate_cond(tree):
     cond = ""
     i = 0  
-    global when
+    global always
     children_size = len(tree)
     while i < children_size:
         child_label = tree[i].label()
         if child_label == 'WRB':
-            when = True
+            always = True
         elif child_label == 'IF':
-            when = True
+            always = True
         elif child_label == 'ACTION':
-            cond += "("+evaluate_action(tree[i])
+            cond += evaluate_action(tree[i])
         else :
             print('Label doesn\'t match with any TOKEN in COND. Exiting program')
             sys.exit()
         i = i+1
-    return cond
+    return cond+"->"
 
 # Evaluate from RES(<-> Condition) Node
 def evaluate_res(tree):
-    res = " -> "
+    res = ""
     i = 0  
     children_size = len(tree)
     while i < children_size:
         child_label = tree[i].label()
         if child_label == 'ACTION':
-            res += evaluate_action(tree[i])+")"
+            res += evaluate_action(tree[i])
         elif child_label == 'THEN':
             pass
         else :
             print('Label doesn\'t match with any TOKEN in RES. Exiting program')
             sys.exit()
         i = i+1
+
+    global a
+    if a == True:
+        res = "A("+res+")"
+        a= False
+
     return res
 
 def evaluate_action(tree):
@@ -131,8 +190,8 @@ def evaluate_action(tree):
 def evaluate_op_l(tree):
     op = ""
     i = 0
-    global when
-    global if_only
+    global always
+    global if_unary
     children_size = len (tree)
     while i < children_size:
         child_label = tree[i].label()
@@ -143,13 +202,13 @@ def evaluate_op_l(tree):
         elif child_label == 'WRB':
             l = tree[i].leaves()
             for w in l :
-                if w == 'whenever' or w == 'when ':
-                    when = True
+                if w == 'whenever' or w == 'always ':
+                    always = True
                     op += " -> "
         elif child_label == 'IF':
             l = tree[i].leaves()
-            when = True
-            if_only = True
+            always = True
+            if_unary = True
             op += " -> "
                     
         else :
@@ -169,10 +228,12 @@ def evaluate_np(tree):
         child_label = tree[i].label()
         if child_label == 'DT':
             l = tree[i].leaves()
-            for dt in l :
-                if dt == 'all':
-                    all = True
-                    np = 'A(' + np
+            for w in l :
+                if w in all_arr:
+                    global a
+                    a = True
+                else :
+                    pass
         elif child_label == 'NOMS':
             np += evaluate_noms(tree[i])
         elif child_label == 'PP':
@@ -180,8 +241,7 @@ def evaluate_np(tree):
         elif child_label == 'ADJECTIVES':
             np += evaluate_adjectives(tree[i])
         elif child_label == 'ADVERBS':
-            pass
-           # np += evaluate_adverbs(tree[i])
+            np += evaluate_adverbs(tree[i])
         elif child_label == 'GERUND':
             pass
         else :
@@ -190,8 +250,6 @@ def evaluate_np(tree):
             sys.exit()
         i = i+1
     
-    if all :
-        np += ")"
     return np
 
 def evaluate_vp(tree):
@@ -243,7 +301,6 @@ def evaluate_nom(tree):
     nom = ""
     i = 0  
     children_size = len(tree)
-    arr_nom = ['NN','NNS','NNP','NNPS','CD']
     while i < children_size:
         child_label = tree[i].label()
         if child_label in arr_nom:
@@ -272,19 +329,51 @@ def evaluate_verb(tree):
             for v in l:
                 if v == 'is' or v == 'does':
                     verb += "."
+                elif v == 'equals' or v == 'equal' :
+                    verb += " = "
+                elif 'hold' in v:
+                    pass
                 else:         
-                    verb += v        
+                    if v.endswith('s'):
+                        v = v[0:-1]
+                    verb += "."+v        
         elif child_label == 'NOM':
             verb += evaluate_nom(tree[i])        
         elif child_label == 'NOT':
            global negation
            negation = True
+        elif child_label == 'ADVERBS' :
+            verb += evaluate_adverbs(tree[i])
         else :
             print(tree[i].label())
             print('Label doesn\'t match with any TOKEN in VERB. Exiting program')
             sys.exit()
         i = i+1
     return verb
+
+def evaluate_adverbs(tree):
+    adv = ""
+    i = 0  
+    children_size = len(tree)
+    while i < children_size:
+        child_label = tree[i].label()
+        if child_label == 'RB' :
+            l = tree[i].leaves()
+            for w in l :
+                if w == 'always':
+                    global always
+                    always = True
+                if w in f_arr:
+                    global f
+                    f = True
+
+        elif child_label == 'ADVERBS':
+            adv += evaluate_adverbs(tree[i])
+        else :
+            print('Label'+ tree[i].label() +'doesn\'t match with any TOKEN in ADVERB. Exiting program')
+            sys.exit()
+        i = i+1
+    return adv
 
 def evaluate_co(tree):
     co = ""
@@ -332,7 +421,6 @@ def evaluate_cod(tree):
 def evaluate_adjectives(tree):
     adj = ""
     i = 0  
-    arr_eq = ['equal', 'identical']
     children_size = len(tree)
     while i < children_size:
         child_label = tree[i].label()
@@ -345,6 +433,9 @@ def evaluate_adjectives(tree):
                  adj += "t"
              elif j in arr_eq:
                  adj += " = "
+             elif  j in x_arr:
+                 global x
+                 x = True
              else:
                  adj += j  
         elif child_label == 'ADJECTIVES':
@@ -393,8 +484,8 @@ def evaluate_p(tree):
         elif child_label == 'IN':
             l = tree[i].leaves()
             for w in l:
-             if w == 'until' or w == 'unless':
-                p = "U"
+             if w in u_arr:
+                p = " U "
         else :
             print(tree[i].label())
             print('Label doesn\'t match with any TOKEN in P. Exiting program')
@@ -427,9 +518,6 @@ def evaluate_comp(tree):
     i = 0  
     children_size = len(tree)
 
-    arr_sup = ['bigger','greater','large','larger','superior','more']
-    arr_inf = ['smaller','inferior','less']
-
     while i < children_size:
         child_label = tree[i].label()
         if child_label == 'JJR':
@@ -443,7 +531,7 @@ def evaluate_comp(tree):
             pass
         else :
             print(tree[i].label())
-            print('Label doesn\'t match with any TOKEN in MC. Exiting program')
+            print('Label doesn\'t match with any TOKEN in COMP. Exiting program')
             sys.exit()
         i = i+1
     return comp

@@ -14,9 +14,9 @@ grm = """
   ACTION -> NP VP | NP VP OP_L ACTION | VP OP_L ACTION | NP OP_L ACTION | VP | NP 
   OP_L -> AND | OR | WRB | IF
   NP -> NOMS | DT NOMS PP | DT ADVERBS ADJECTIVES NOMS | DT ADJECTIVES NOMS  | ADJECTIVES NOMS | DT NOMS |  DT NOMS GERUND 
-  VP -> VERB VBN | VERB CO | VERB VBN CO | MODAL VB | MODAL VB VBN | MODAL VB VBN CO | VERB VB CO | MODAL | VERB
-  VERB -> VB | VBZ | VBP | VBZ NOT | VBP NOT  | VB NOT | NOM
-  MODAL -> MD | MD NOT
+  VP -> VERB VBN | VERB CO | VERB VBN CO | MODAL VB | MODAL VB VBN | MODAL VB VBN CO | VERB VB CO | MODAL | VERB 
+  VERB -> VB | VBZ | VBP | VBZ NOT | VBP NOT  | VB NOT | NOM | ADVERBS VB | VB ADVERBS | ADVERBS VBZ | VBZ ADVERBS | ADVERBS VBP | VBP ADVERBS | ADVERBS VBZ NOT | ADVERBS VBP NOT | ADVERBS VB NOT | ADVERBS  NOM | VBZ NOT ADVERBS|  VBP NOT ADVERBS | VB NOT  ADVERBS| NOM ADVERBS
+  MODAL -> MD | MD NOT | MD ADVERBS | ADVERBS MD |  MD NOT ADVERBS | ADVERBS MD NOT 
   CO -> COD | PP 
   COD -> ADJECTIVES | ADJECTIVES PP | NP | NP PP  | VP 
   PP -> P NP | P | P VP
@@ -125,7 +125,7 @@ def parse(dico,tokens):
     tags = nltk.pos_tag(tokens)   
     dico = add_elem(dico,tags)
 
-    print(dico)
+    #print(dico)
 
     # first we add all the terminals symbols to the grammar
     grammar = nltk.CFG.fromstring(grm+add_all_rules(dico))
