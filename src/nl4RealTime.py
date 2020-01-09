@@ -6,16 +6,17 @@ from pathlib import Path
 from nltk import WordPunctTokenizer
 from nltk.tree import *
 
-#definition of the grammar for parsing the tokens 
+#definition of the grammar for parsing the tokens
+# add a log
 grm = """
   S -> COND COMMA RES | COND RES | ACTION
-  COND -> WRB ACTION | IF ACTION
-  RES -> ACTION | THEN ACTION
+  COND -> WRB ACTION | IF ACTION 
+  RES -> ACTION | THEN ACTION | DO ACTION | DO ACTION WITHIN TIME | DO ACTION WITHIN TIME AFTER
   ACTION -> NP VP | NP VP OP_L ACTION | VP OP_L ACTION | NP OP_L ACTION | VP | NP 
   OP_L -> AND | OR | WRB | IF
   NP -> NOMS | DT NOMS PP | DT ADVERBS ADJECTIVES NOMS | DT ADJECTIVES NOMS  | ADJECTIVES NOMS | DT NOMS |  DT NOMS GERUND 
   VP -> VERB VBN | VERB CO | VERB VBN CO | MODAL VB | MODAL VB VBN | MODAL VB VBN CO | VERB VB CO | MODAL | VERB 
-  VERB -> VB | VBZ | VBP | VBZ NOT | VBP NOT  | VB NOT | NOM | ADVERBS VB | VB ADVERBS | ADVERBS VBZ | VBZ ADVERBS | ADVERBS VBP | VBP ADVERBS | ADVERBS VBZ NOT | ADVERBS VBP NOT | ADVERBS VB NOT | ADVERBS  NOM | VBZ NOT ADVERBS|  VBP NOT ADVERBS | VB NOT  ADVERBS| NOM ADVERBS
+  VERB -> VB | VBZ | VBP | VBZ NOT | VBP NOT  | VB NOT | NOM | ADVERBS VB | VB ADVERBS | ADVERBS VBZ | VBZ ADVERBS | ADVERBS VBP | VBP ADVERBS | ADVERBS VBZ NOT | ADVERBS VBP NOT | ADVERBS VB NOT | ADVERBS  NOM | VBZ NOT ADVERBS|  VBP NOT ADVERBS | VB NOT  ADVERBS| NOM ADVERBS | DO NOT | MODAL VB
   MODAL -> MD | MD NOT | MD ADVERBS | ADVERBS MD |  MD NOT ADVERBS | ADVERBS MD NOT 
   CO -> COD | PP 
   COD -> ADJECTIVES | ADJECTIVES PP | NP | NP PP  | VP 
@@ -26,10 +27,13 @@ grm = """
   ADVERBS -> RB ADVERB | RB
   NOMS -> NOM NOMS | NOM | MC
   NOM -> NN | NNS | NNP | NNPS | CD 
-  MC -> NOMS HYPHEN NOMS | ADJECTIVES HYPHEN NOMS
+  MC -> NOMS HYPHEN NOMS | ADJECTIVES HYPHEN NOMS | NOMS OP NOMS
   GERUND -> VBG | VBG CO
   COMMA -> ','
-  HYPHEN -> '-' \n"""
+  HYPHEN -> '-'
+  OP -> '+'
+  TIME -> CD NNS
+  AFTER -> AFTERWARDS ACTION \n"""
 
 # remove unneccessary characters in the statement such as '.', '-' that may induce confusion to the nltk tool
 def purge(statement):
@@ -94,7 +98,13 @@ def add_elem(d,tags):
         elif w == 'Or' or w == 'or' or w == 'OR':
             d['OR'] =[w]
         elif w == 'And' or w == 'and' or w == 'AND':
-            d['AND'] =[w]     
+            d['AND'] =[w]  
+        elif w == 'do':
+            d['DO'] = [w]   
+        elif w == 'within':
+            d['WITHIN'] = [w]
+        elif w == 'afterwards':
+            d['AFTERWARDS'] = [w]
         elif t not in d:   
             if t.isalpha():
                 d[t] = [w]
@@ -122,10 +132,8 @@ def add_all_rules(dico):
 
 #generate the parse tree
 def parse(dico,tokens):
-    tags = nltk.pos_tag(tokens)   
+    tags = nltk.pos_tag(tokens)  
     dico = add_elem(dico,tags)
-
-    #print(dico)
 
     # first we add all the terminals symbols to the grammar
     grammar = nltk.CFG.fromstring(grm+add_all_rules(dico))

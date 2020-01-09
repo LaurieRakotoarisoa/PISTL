@@ -65,3 +65,15 @@ When a connection is not made to the server, report an error and reset network c
 When STATE is  20, ACTIVE holds ultimately.
 ;
 When STATE is not  eventually 20, ACTIVE holds ultimately.
+;
+when PSY is 4 do GEARS_EXTENDED shall be true within 2 s
+;
+when STATE+1 is more than 5 do DOORS_CLOSED
+;
+when STATE+1 is more than 5 do DOORS_CLOSED within 10 seconds
+;
+when LG_CMD is DOWN do GEARS_RETRACTED shall be true and DOORS_CLOSED shall be true within 15 seconds
+;
+when LG_CMD is DOWN do GEARS_RETRACTED shall be true and DOORS_CLOSED shall be true within 15 seconds afterwards GEARS_RETRACTED
+;
+when LG_CMD is UP do GEARS_RETRACTED shall be true within 12 seconds afterwards GEARS_RETRACTED shall be true

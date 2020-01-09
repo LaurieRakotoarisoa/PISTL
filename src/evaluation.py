@@ -18,6 +18,17 @@ if_unary = False
 is_equal = False
 is_cd = False
 
+#check if there's a WHEN ... DO ... CASE
+do_exist = False
+
+#check if there's WITHIN
+within = False
+within_value = "infinity"
+
+#check if there's AFTERWARDS event
+afterwards = False
+afterwards_value = "infinity"
+
 #check if there are 'all' events
 a = False
 
@@ -87,6 +98,25 @@ def apply_finally(formula):
         f = False
     return formula
 
+def apply_do(formula):
+    global do_exist
+    global within
+    global within_value
+    if do_exist == True:
+        formula = "F{"+within_value+"}("+formula+")"
+        do_exist = False
+        if within == True:
+            within_value = "infinity"
+            within = False
+    return formula
+
+def apply_afterwards(formula):
+    global afterwards
+    global afterwards_value
+    if afterwards == True:
+        formula = "G{"+afterwards_value+"}("+formula+")"
+        afterwards = False
+    return formula
 
 
 # Evaluate from S (<-> Start) Node
@@ -168,6 +198,18 @@ def evaluate_res(tree):
             res = apply_finally(res)
         elif child_label == 'THEN':
             pass
+        elif child_label == 'DO' :
+            global do_exist
+            global always
+            do_exist = True
+            always = False
+        elif child_label == 'WITHIN' :
+            global within
+            within = True
+        elif child_label == 'TIME':
+            evaluate_time(tree[i])
+        elif child_label == 'AFTER':
+            res += " && "+evaluate_after(tree[i])
         else :
             print('Label doesn\'t match with any TOKEN in RES. Exiting program')
             sys.exit()
@@ -177,6 +219,8 @@ def evaluate_res(tree):
     if a == True:
         res = "A("+res+")"
         a= False
+
+    res = apply_do(res)
 
     return res
 
@@ -243,7 +287,7 @@ def evaluate_op_l(tree):
         i = i+1
     return op
 
-
+# séparer avec des '_' ou '.'
 def evaluate_np(tree):
     np = ""
     i = 0  
@@ -360,7 +404,7 @@ def evaluate_verb(tree):
         if child_label == 'VB' or child_label == 'VBZ' or child_label == 'VBP' :
             l = tree[i].leaves()
             for v in l:
-                if v == 'is' :
+                if v == 'is' or v == 'be' :
                     is_equal = True
                     verb += "."
                 elif v == 'does':
@@ -384,6 +428,11 @@ def evaluate_verb(tree):
            negation = True
         elif child_label == 'ADVERBS' :
             verb += evaluate_adverbs(tree[i])
+        elif child_label == 'DO' :
+            is_equal = False
+            verb += "."
+        elif child_label == 'MODAL': 
+            pass
         else :
             print(tree[i].label())
             print('Label doesn\'t match with any TOKEN in VERB. Exiting program')
@@ -553,6 +602,10 @@ def evaluate_mc(tree):
             mc += evaluate_adjectives(tree[i])
         elif child_label == 'HYPHEN' :
             mc += '-'
+        elif child_label == 'OP':
+              l = tree[i].leaves()
+              for w in l :
+                  mc += w
         else :
             print(tree[i].label())
             print('Label doesn\'t match with any TOKEN in MC. Exiting program')
@@ -584,3 +637,40 @@ def evaluate_comp(tree):
         i = i+1
     return comp
 
+
+def evaluate_time(tree):
+    i = 0  
+    children_size = len(tree)
+    while i < children_size:
+        child_label = tree[i].label()
+        if child_label == 'CD':
+            l = tree[i].leaves()
+            for w in l:
+                global within_value
+                within_value = w 
+        elif child_label == 'NNS':
+            pass
+        else :
+            print(tree[i].label())
+            print('Label doesn\'t match with any TOKEN in TIME. Exiting program')
+            sys.exit()
+        i = i+1
+
+def evaluate_after(tree):
+    after = ""
+    i = 0  
+    children_size = len(tree)
+    while i < children_size:
+        child_label = tree[i].label()
+        if child_label == 'AFTERWARDS':
+            global afterwards
+            afterwards = True
+        elif child_label == 'ACTION':
+            after += evaluate_action(tree[i])
+        else :
+            print(tree[i].label())
+            print('Label doesn\'t match with any TOKEN in TIME. Exiting program')
+            sys.exit()
+        i = i+1
+    after = apply_afterwards(after)
+    return after
