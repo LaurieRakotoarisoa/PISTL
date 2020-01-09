@@ -182,6 +182,10 @@ def main(argv):
     contents = Path("exemple.txt").read_text()
     statements = contents.split(';')
     print("\n")
+
+    filename = "translation.txt"
+    myfile = open(filename,'w')
+
     
     for statement in statements:
         
@@ -208,6 +212,10 @@ def main(argv):
 
             # printing result
             print(pure_statement+'\n'+formula+'\n')
+
+            myfile.write(formula+'\n\n')
+
+    myfile.close()
 
 
     

@@ -349,6 +349,8 @@ def evaluate_vp(tree):
 
     if is_equal == True and is_cd == True :
         vp = vp.replace('.','=')
+        is_equal = False
+        is_cd = False
 
     return vp
 
