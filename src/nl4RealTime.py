@@ -1,6 +1,7 @@
 import nltk
 import sys
 import evaluation
+import os
 from pathlib import Path
 
 from nltk import WordPunctTokenizer
@@ -175,47 +176,67 @@ def test_get_pos_tag(statement):
     tags = nltk.pos_tag(tokens)   
     print(tags)
 
+def process_statement(statement):
+    """ Function to translate a statement to a logic formula """
+
+    if statement != '' :
+                # get the statement to parse
+                #statement = example.get(str(argv[1]))
+
+
+                #test_get_pos_tag(statement)
+                
+                # create dictionnary used for constructing the grammar 
+                dico = dict()
+
+                # lexical analysis
+                pure_statement = purge(statement)
+            
+                tokens = tokenize(pure_statement)
+
+                # syntax analysis
+                tree = parse(dico,tokens)
+                
+                # semantic analysis
+                formula = evaluation.evaluate(tree) 
+
+                # printing result
+                print(pure_statement+'\n'+formula+'\n')
+
+                return formula
+
+def process_file(filename):
+    """ Function to translate each statement in file to logic formulas and storing them in a file """
+    if os.path.isfile(filename):
+        contents = Path(filename).read_text()
+        statements = contents.split(';')
+        print("\n")
+        myfile = open("translation_"+filename,'w')
+        formula = ''
+
+        for statement in statements:
+            formula += process_statement(statement)+"\n"
+
+        myfile.write(formula+'\n')
+        myfile.close()
+    else:
+        print("Le fichier ",filename," n'existe pas")
+
+
 
 def main(argv):
 
     #read set of examples
-    contents = Path("exemple.txt").read_text()
-    statements = contents.split(';')
-    print("\n")
+    if len(argv) == 1:
+        process_file("exemple.txt")   
+    elif len(argv) == 3:
+        if argv[1] == '-f':
+            process_file(argv[2])
+        elif argv[1] == '-s':
+            process_statement(argv[2])
+    else:
+        print("erreur saisie commande")
 
-    filename = "translation.txt"
-    myfile = open(filename,'w')
-
-    
-    for statement in statements:
-        
-        if statement != '' :
-            # get the statement to parse
-            #statement = example.get(str(argv[1]))
-
-
-            #test_get_pos_tag(statement)
-            
-            # create dictionnary used for constructing the grammar 
-            dico = dict()
-
-            # lexical analysis
-            pure_statement = purge(statement)
-           
-            tokens = tokenize(pure_statement)
-
-            # syntax analysis
-            tree = parse(dico,tokens)
-            
-            # semantic analysis
-            formula = evaluation.evaluate(tree) 
-
-            # printing result
-            print(pure_statement+'\n'+formula+'\n')
-
-            myfile.write(formula+'\n\n')
-
-    myfile.close()
 
 
     
