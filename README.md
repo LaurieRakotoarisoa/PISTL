@@ -14,7 +14,7 @@ Système de traduction de langue naturelle pour les énoncés d’informatique t
 
     >> nltk.download('averaged_perceptron_tagger')
 
-- S'il manque toujours un module alors toujours dans l'interpréteur python :
+- S'il manque toujours un module alors toujours dans l'interpréteur python3 :
     
     >> import nltk
 
@@ -22,17 +22,28 @@ Système de traduction de langue naturelle pour les énoncés d’informatique t
 
 # Test
 
-Il existe 6 énoncés de tests disponibles.
+Dans le terminal :
 
-Pour tester un énoncé :
+      -	Pour entrer un énoncé à traduire, il faut lancer la commande suivante :
 
-    >>  python nl4RealTime.py n°enonce
+	>> python3 nl4RealTime.py -s ENONCE
 
-Par exemple pour tester l'énoncé 1 :
+	où ENONCE est une chaine de caractère entourée de double apostrophes
 
-    >> python nl4RealTime.py 1
+-------
 
-L'arbre syntaxique (en complément dans l'archive) devrait apparaître
+      -	Pour entrer un fichier contenant des énoncés à traduire, il faut lancer la commande suivante :
+	
+	>> python3 nl4RealTime.py -f FILENAME
+	
+	où FILENAME est le nom d'un fichier contenant des formules séparées par des ';' et devant se trouver dans le dossier NL4RealTime
+
+	Le résultat s'affiche et est également stocker dans un nouveau fichier commençant par "translation_" suivi du nom de fichier
+
+
+
+NOTE : On peut tester le fichier exemple.txt en lançant la commande :
+	>> python3 nl4RealTime.py
 
 # GRAMMAIRE 
 
