@@ -65,7 +65,7 @@ and eval_unary_temp_op_b o b=
   and eval_atomic f =
   match f with
   Af1(x) -> (eval_state_constant x)^(!s)
-  |Af2(v1,c,v2) -> (eval_valueId v1)^" "^(!s)^" "^(eval_valueId v2)
+  |Af2(v1,c,v2) -> (eval_valueId v1)^" "^(eval_comp c)^" "^(eval_valueId v2)
 
 and eval_binary_temp_op b1 o b2=
   match o with
