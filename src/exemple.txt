@@ -77,3 +77,5 @@ when LG_CMD is DOWN do GEARS_RETRACTED shall be true and DOORS_CLOSED shall be t
 when LG_CMD is DOWN do GEARS_RETRACTED shall be true and DOORS_CLOSED shall be true within 15 seconds afterwards GEARS_RETRACTED
 ;
 when LG_CMD is UP do GEARS_RETRACTED shall be true within 12 seconds afterwards GEARS_RETRACTED shall be true
+;
+do DOORS_CLOSED when STATE+1 is more than 5

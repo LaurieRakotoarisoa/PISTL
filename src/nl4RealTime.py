@@ -11,8 +11,8 @@ from nltk.tree import *
 # add a log
 grm = """
   S -> COND COMMA RES | COND RES | ACTION
-  COND -> WRB ACTION | IF ACTION 
-  RES -> ACTION | THEN ACTION | DO ACTION | DO ACTION WITHIN TIME | DO ACTION WITHIN TIME AFTER
+  COND -> WHEN ACTION | IF ACTION | DO ACTION 
+  RES -> ACTION | THEN ACTION | DO ACTION | DO ACTION WITHIN TIME | DO ACTION WITHIN TIME AFTER | WHEN ACTION
   ACTION -> NP VP | NP VP OP_L ACTION | VP OP_L ACTION | NP OP_L ACTION | VP | NP 
   OP_L -> AND | OR | WRB | IF
   NP -> NOMS | DT NOMS PP | DT ADVERBS ADJECTIVES NOMS | DT ADJECTIVES NOMS  | ADJECTIVES NOMS | DT NOMS |  DT NOMS GERUND 
@@ -26,8 +26,8 @@ grm = """
   ADJECTIVES -> JJ ADJECTIVES | JJ | MC | COMP | JJS
   COMP -> JJR IN
   ADVERBS -> RB ADVERB | RB
-  NOMS -> NOM NOMS | NOM | MC
-  NOM -> NN | NNS | NNP | NNPS | CD 
+  NOMS -> NOM NOMS | NOM | MC 
+  NOM -> NN | NNS | NNP | NNPS | CD | VBD
   MC -> NOMS HYPHEN NOMS | ADJECTIVES HYPHEN NOMS | NOMS OP NOMS
   GERUND -> VBG | VBG CO
   COMMA -> ','
@@ -100,12 +100,14 @@ def add_elem(d,tags):
             d['OR'] =[w]
         elif w == 'And' or w == 'and' or w == 'AND':
             d['AND'] =[w]  
-        elif w == 'do':
+        elif w == 'do' or w == 'Do' or w == 'DO':
             d['DO'] = [w]   
         elif w == 'within':
             d['WITHIN'] = [w]
         elif w == 'afterwards':
             d['AFTERWARDS'] = [w]
+        elif w == 'When' or w == 'when' or w == 'WHEN':
+            d['WHEN'] = [w]
         elif t not in d:   
             if t.isalpha():
                 d[t] = [w]
@@ -135,6 +137,7 @@ def add_all_rules(dico):
 def parse(dico,tokens):
     tags = nltk.pos_tag(tokens)  
     dico = add_elem(dico,tags)
+   # print(dico)
 
     # first we add all the terminals symbols to the grammar
     grammar = nltk.CFG.fromstring(grm+add_all_rules(dico))
@@ -184,7 +187,7 @@ def process_statement(statement):
                 #statement = example.get(str(argv[1]))
 
 
-                #test_get_pos_tag(statement)
+               # test_get_pos_tag(statement)
                 
                 # create dictionnary used for constructing the grammar 
                 dico = dict()

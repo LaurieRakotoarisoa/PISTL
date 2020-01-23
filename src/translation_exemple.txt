@@ -1,0 +1,42 @@
+CLOCK < STATE-1
+VAR > MIN
+REACT && STOP
+!(DEADLOCK)
+!(DEADLOCK)
+STATUS = ACTIVE
+STATUS  = ACTIVE
+!(VAR  =13)
+PHI && PSY
+PHI || PSY
+AG( PHI -> PSY )
+AG( PHI -> PSY )
+AG(STATUS = 3)
+F(ACTIVE)
+F(STATE=0)
+F(ACTIVE)
+STATE.20 U LIVE
+X(LIVE )
+AG( PHI > MIN && PHI = ACTIVE -> PSY )
+AG(STATUS  = STATE)
+AG(ACTIVE)
+PHI || PSY U STATUS > MIN
+X(PSY && PHI )
+AG(!(DEADLOCK))
+AG( PHI -> PSY )
+AG( ACTIVE -> X(CLOCK  ))
+AG(errormessage.displayed || message.screen ->onlyavailableuseraction acknowledgementokbutton)
+AG(cancelbuttonidentifytravelerscreen.pressed ->controlreturns.mainmenuscreen)
+AG(match.found ->A(fields.arefilled))
+AG(connection.made.POPserver ->mail.transferred.localmachine)
+AG(namemailbox.double-clicked ->mailbox.opened)
+AG(!(connection.made.server) ->.reporterror &&resetnetworkcomponent.initialstate)
+AG(STATE=20 ->F(ACTIVE))
+AG(!(F(STATE=20)) ->F(ACTIVE))
+PSY=4 ->F{2}(GEARS_EXTENDED)
+STATE+1 > 5 ->F{infinity}(DOORS_CLOSED)
+STATE+1 > 5 ->F{10}(DOORS_CLOSED)
+LG_CMD=DOWN ->F{15}(GEARS_RETRACTED && DOORS_CLOSED)
+LG_CMD.DOWN ->F{15}(GEARS_RETRACTED && DOORS_CLOSED && G{infinity}(GEARS_RETRACTED))
+LG_CMD.UP ->F{12}(GEARS_RETRACTED && G{infinity}(GEARS_RETRACTED))
+AG(STATE+1 > 5 -> F{infinity}(DOORS_CLOSED))
+

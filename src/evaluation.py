@@ -32,17 +32,24 @@ afterwards_value = "infinity"
 #check if there are 'all' events
 a = False
 
-
 #check if there are keywords referring to 'F' event (eventually, finally, ultimately)
 f = False
 
 #check if there are keywords referring to 'X' event (next)
 x = False
 
-#keywords shortcut
+#check if there are adverbs before VB for precedence
+negationBeforeFinally = False
+
+#check if there is a condition -> only one component
+conditionExists = False
+
+#check if the sentence is in form DO....WHEN
+isDoWhen = False
+doWhen_do = ""
 
 #grammar
-arr_nom = ['NN','NNS','NNP','NNPS','CD']
+arr_nom = ['NN','NNS','NNP','NNPS','CD','VBD']
 
 #logic
 arr_sup = ['bigger','greater','large','larger','superior','more']
@@ -110,6 +117,13 @@ def apply_do(formula):
             within = False
     return formula
 
+def apply_negation(formula):
+    global negation
+    if negation == True:
+        formula = "!("+formula+")"
+        negation = False
+    return formula
+
 def apply_afterwards(formula):
     global afterwards
     global afterwards_value
@@ -117,6 +131,8 @@ def apply_afterwards(formula):
         formula = "G{"+afterwards_value+"}("+formula+")"
         afterwards = False
     return formula
+
+
 
 
 # Evaluate from S (<-> Start) Node
@@ -155,6 +171,11 @@ def evaluate(tree):
         #incrementing
         i = i+1
 
+    global conditionExists
+    global isDoWhen
+    conditionExists = False
+    isDoWhen = False
+
     # if we found any temporal logics keywords then we have to add them to the formula
     logic_formula = apply_temporal_logic(logic_formula)
 
@@ -165,42 +186,59 @@ def evaluate(tree):
     
 # Evaluate from COND(<-> Condition) Node
 def evaluate_cond(tree):
+
+    global conditionExists
+    global do_exist
+    global always
+    global isDoWhen
+    global doWhen_do
+    conditionExists = True
     cond = ""
     i = 0  
     global always
     children_size = len(tree)
     while i < children_size:
         child_label = tree[i].label()
-        if child_label == 'WRB':
+        if child_label == 'WHEN':
             always = True
         elif child_label == 'IF':
             always = True
+        elif child_label == 'DO':
+            isDoWhen = True
+            do_exist = True
+            always = False
         elif child_label == 'ACTION':
             cond += evaluate_action(tree[i])
             cond = apply_next(cond)
             cond = apply_finally(cond)
+            cond = apply_negation(cond)
         else :
             print('Label doesn\'t match with any TOKEN in COND. Exiting program')
             sys.exit()
         i = i+1
-    return cond+"->"
+    if isDoWhen:
+        doWhen_do = cond
+        return ""
+    else:
+        return cond+" ->"
 
 # Evaluate from RES(<-> Condition) Node
 def evaluate_res(tree):
     res = ""
     i = 0  
     children_size = len(tree)
+    global do_exist
+    global always
     while i < children_size:
         child_label = tree[i].label()
         if child_label == 'ACTION':
             res += evaluate_action(tree[i]) 
             res = apply_next(res)
             res = apply_finally(res)
+            res = apply_negation(res)
         elif child_label == 'THEN':
             pass
         elif child_label == 'DO' :
-            global do_exist
-            global always
             do_exist = True
             always = False
         elif child_label == 'WITHIN' :
@@ -210,6 +248,8 @@ def evaluate_res(tree):
             evaluate_time(tree[i])
         elif child_label == 'AFTER':
             res += " && "+evaluate_after(tree[i])
+        elif child_label == 'WHEN' :
+             always = True
         else :
             print('Label doesn\'t match with any TOKEN in RES. Exiting program')
             sys.exit()
@@ -220,14 +260,23 @@ def evaluate_res(tree):
         res = "A("+res+")"
         a= False
 
-    res = apply_do(res)
+    global isDoWhen
+    global doWhen_do
 
-    return res
+    if isDoWhen:
+        cond = res+" -> "
+        res = apply_do(doWhen_do)
+        return cond + res
+    else:
+        res = apply_do(res)
+        return res
 
 def evaluate_action(tree):
     action = ""
     i = 0  
     children_size = len(tree)
+    global negationBeforeFinally
+    global conditionExists
     while i < children_size:
         child_label = tree[i].label()
         if child_label == 'NP':
@@ -237,7 +286,10 @@ def evaluate_action(tree):
         elif child_label == 'ACTION':
             action += evaluate_action(tree[i])
             action = apply_next(action)
-            action = apply_finally(action)
+            if conditionExists:
+                action = apply_finally(action)
+                action = apply_negation(action)
+                conditionExists = False
         elif child_label == 'OP_L' : 
             action += evaluate_op_l(tree[i])
         else :
@@ -246,13 +298,17 @@ def evaluate_action(tree):
             sys.exit()
         i = i+1
 
-    global negation
-    if negation == True:
-        action = "!("+action+")"
-        negation = False
+    if not negationBeforeFinally:
+       action = apply_negation(action)
+       negationBeforeFinally = True
+
+    if not conditionExists and negationBeforeFinally:
+        action = apply_finally(action)
+        action = apply_negation(action)
+   # elif not conditionExists:
+
+
     
-
-
     return action
 
 def evaluate_op_l(tree):
@@ -400,6 +456,8 @@ def evaluate_verb(tree):
     verb = ""
     i = 0  
     global is_equal
+    posNegation = 0
+    posAdverb = 0 
     children_size = len(tree)
     while i < children_size:
         child_label = tree[i].label()
@@ -428,8 +486,10 @@ def evaluate_verb(tree):
         elif child_label == 'NOT':
            global negation
            negation = True
+           posNegation = i
         elif child_label == 'ADVERBS' :
             verb += evaluate_adverbs(tree[i])
+            posAdverb = i
         elif child_label == 'DO' :
             is_equal = False
             verb += "."
@@ -440,6 +500,13 @@ def evaluate_verb(tree):
             print('Label doesn\'t match with any TOKEN in VERB. Exiting program')
             sys.exit()
         i = i+1
+
+    global negationBeforeFinally
+    if posNegation < posAdverb:
+        negationBeforeFinally = True
+    else:
+         negationBeforeFinally = False
+
     return verb
 
 def evaluate_adverbs(tree):
