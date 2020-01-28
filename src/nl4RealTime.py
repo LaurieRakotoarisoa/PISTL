@@ -36,12 +36,15 @@ grm = """
   TIME -> CD NNS
   AFTER -> AFTERWARDS ACTION \n"""
 
-# remove unneccessary characters in the statement such as '.', '-' that may induce confusion to the nltk tool
 def purge(statement):
-
-    # remove hyphen
-   # remove_hyphen = statement.split('-')
-   # no_hyphen = ''.join(remove_hyphen)
+    """
+        Remove unnecessary punctuation characters in a statement that may induce confusion for the NLTK tool
+        and return the result.
+        
+    Parameters
+    ----------
+        statement : str ->  Statement to purge 
+    """
 
     # remove dot
     remove_dot = statement.split('.')
@@ -62,8 +65,14 @@ def purge(statement):
     ret = no_eol
     return ret
 
-# reformulate the statement without contraction of a negative verb
 def negation(statement):
+    """
+        Reformulate a statement without contraction of negative verbs and return the result.
+        
+    Parameters
+    ----------
+        statement : str -> Statement that may contain negative verbs contracted
+    """
     list =  statement.split(' ')
     new_list = []
     for w in list:
@@ -81,14 +90,33 @@ def negation(statement):
 
     return s
 
-#tokenize the statement
 def tokenize(statement):
+    """ 
+        Tokenize a statement using NLTK tokenizer and return the result.
+
+    Parameters
+    ----------
+        statement : str -> Statement to tokenize
+
+    """
     tokenizer = WordPunctTokenizer()
     tokens = tokenizer.tokenize(statement)
     return tokens
 
-# add an word as an terminal symbol to the dictionnary in their rightful labels
 def add_elem(d,tags):
+    """
+        Add a word as a terminal symbol to a dictionary in their corresponding labels
+        and return the updated dictionary
+    
+    Parameters
+    ----------
+        d : dict -> dictionary indexed by labels associated 
+                    with a list of its corresponding terminal symbols
+
+        tags : list of tuple -> 2-tuples containing a word and its corresponding label
+        
+    """
+    
     for (w,t) in tags:
         if w == 'not':
             d['NOT'] =[w]
@@ -116,8 +144,16 @@ def add_elem(d,tags):
                 d[t].append(w)
     return d
 
-#add a line of rules to the grammar for a specific label 
 def add_rule(tag,dico):
+    """
+        Add a line of rules to the grammar for a specific label.
+    
+    Parameters
+    ----------
+        tag : str -> label which will have new rules in the grammar
+
+        dico : dict -> dictionary containing all labels and its corresponding terminal symbols
+    """
     if len(dico[tag]) > 0:
         res = tag+" -> "
         for n in dico[tag]:
@@ -125,9 +161,16 @@ def add_rule(tag,dico):
         return res[:-2]+"\n"
     else:
         return ""
-
-#create a string containing the set of rules of all terminal symbols we found in the statement 
+ 
 def add_all_rules(dico):
+    """
+        Create a string containing the set of rules of all terminal symbols, previously found in a statement and stored in a dictionary, and return it.
+    
+    Parameters
+    ----------
+        dico : dict -> dictionary containing all labels 
+                        and their corresponding terminal symbols
+    """
     res =""
     for t in dico:
         res+=add_rule(t,dico)
@@ -135,9 +178,18 @@ def add_all_rules(dico):
 
 #generate the parse tree
 def parse(dico,tokens):
+    """
+        Generate a parse tree from the grammar `grm` after adding terminal symbols. 
+
+    Parameters
+    ----------
+        dico : dict -> dictionary containing all labels 
+                        and their corresponding terminal symbols
+        tokens : list of str -> tokens generated from a statement to be translated
+    
+    """
     tags = nltk.pos_tag(tokens)  
     dico = add_elem(dico,tags)
-   # print(dico)
 
     # first we add all the terminals symbols to the grammar
     grammar = nltk.CFG.fromstring(grm+add_all_rules(dico))
@@ -161,35 +213,19 @@ def parse(dico,tokens):
     # returning the parse tree
     return trees
 
-#set of examples for unit testing
-#example = {
-#    "1" : "When an error message is displayed or the message is on screen the only available user action is acknowledgement via the 'ok' button",
-#    "2" : "When the cancel button on the identify traveler screen is pressed control returns to the main menu screen" ,
-#    "3" : "When a match is found all fields are filled in",
-#    "4" : "When a connection is made to the POP server, mail will be transferred to the local machine",
-#    "5" : "When the name of a mailbox is double-clicked, that mailbox will be opened.",
-#    "6" : "When a connection is not made to the server, report an error and reset network component to initial state.",
-#}
-
-# FOR TESTING ONLY : function that determines the pos_tags given by nltk.pos_tag
-def test_get_pos_tag(statement):
-    print(statement)
-    tokenizer = WordPunctTokenizer()
-    tokens = tokenizer.tokenize(statement)
-    tags = nltk.pos_tag(tokens)   
-    print(tags)
-
 def process_statement(statement):
-    """ Function to translate a statement to a logic formula """
+    """ 
+        Translate a statement into a logic formula and return the result.
+
+    Parameters
+    ----------
+        statement : str -> statement to translate
+
+    """
 
     if statement != '' :
-                # get the statement to parse
-                #statement = example.get(str(argv[1]))
 
-
-               # test_get_pos_tag(statement)
-                
-                # create dictionnary used for constructing the grammar 
+                # create a dictionary used to construct the grammar 
                 dico = dict()
 
                 # lexical analysis
@@ -209,7 +245,14 @@ def process_statement(statement):
                 return formula
 
 def process_file(filename):
-    """ Function to translate each statement in file to logic formulas and storing them in a file """
+    """ 
+        Translate each statement from a file into logic formulas and store them into a new file.
+
+    Parameters
+    ----------
+        filename : str -> name of the file containing statements
+
+    """
     if os.path.isfile(filename):
         contents = Path(filename).read_text()
         statements = contents.split(';')
@@ -228,7 +271,6 @@ def process_file(filename):
 
 
 def main(argv):
-
     #read set of examples
     if len(argv) == 1:
         process_file("exemple.txt")   
@@ -242,13 +284,4 @@ def main(argv):
 
 
 
-    
- #   except:
- #       print("usage : python nl4rRealTime.py test_number\n ex : python nl4RealTime.py 5\n test_number range from 1 to 6")
- #       sys.exit()
-
-
-
 main(sys.argv)
-#test_get_pos_tag(example.get("6")) 
-#negation(example.get("6")) 
