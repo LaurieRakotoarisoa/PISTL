@@ -1,0 +1,76 @@
+____
+G(_)
+____
+    When the screen is black, the system is freezed 
+    AG(screen black ->system.freezed)
+
+    The software is always stored in a folder 
+    AG(software.storedfolder)
+
+    When ACTIVE, BUTTON always occurs 
+    AG(ACTIVE ->BUTTON.occur)
+
+    System always start
+    AG(System.start)
+
+    the button never move 
+    AG(!(button.move))
+
+    an error never occur when START 
+    AG(START ->!(error.occur))
+
+    if STATE-1 then ACTIVE always occur 
+    AG(STATE-1 ->ACTIVE.occur)
+
+    _____________
+    G( _ -> F(_))
+    _____________
+        if ACTIVE, a button appears eventually 
+        AG(ACTIVE ->F(button.appear))
+
+        WHEN ACTIVE, BUTTON is eventually visible 
+        AG(ACTIVE ->F(BUTTON visible))
+
+        when ACTIVE, the button is ultimately visible 
+        AG(ACTIVE ->F(button visible))
+
+        if the string is not empty, a message occurs finally 
+        AG(!(string empty) ->F(messageoccur))
+
+        when success, STATE holds finally 
+        AG(success ->F(STATE))
+
+        STATE holds ultimately when SUCCESS 
+        AG(SUCCESS ->F(STATE))
+
+____
+F(_)
+____
+
+    STATE until OK holds finally 
+    F(STATE U OK)
+
+    ____
+    F(_->_U_)
+    ____
+
+        PROCESS until SUCCESS if CMD eventually holds 
+        AG( F(CMD -> PROCESS U SUCCESS ))
+
+        PROCESS until SUCCESS when CMD holds ultimately 
+        AG(F(CMD) ->PROCESS U SUCCESS)
+
+        STATE until OK if button is clicked holds ultimately 
+        AG( F(button.clicked -> STATE U OK ))
+
+        the screen will be white until end if an error holds eventually 
+        AG( F(error -> screen white U end ))
+
+
+
+
+
+        
+        
+
+

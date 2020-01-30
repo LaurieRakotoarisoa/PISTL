@@ -2,6 +2,7 @@ import nltk
 import sys
 import evaluation
 import os
+import re
 from pathlib import Path
 
 from nltk import WordPunctTokenizer
@@ -10,7 +11,7 @@ from nltk.tree import *
 #definition of the grammar for parsing the tokens
 # add a log
 grm = """
-  S -> COND COMMA RES | COND RES | ACTION
+  S -> COND COMMA RES | COND RES | ACTION | RES COND
   COND -> WHEN ACTION | IF ACTION | DO ACTION 
   RES -> ACTION | THEN ACTION | DO ACTION | DO ACTION WITHIN TIME | DO ACTION WITHIN TIME AFTER | WHEN ACTION
   ACTION -> NP VP | NP VP OP_L ACTION | VP OP_L ACTION | NP OP_L ACTION | VP | NP 
@@ -204,6 +205,7 @@ def parse(dico,tokens):
     for tree in trees:
         try:
             #tree.draw() 
+            print(tree)
             return tree
         except:
             print("Issue with parsing")
@@ -237,12 +239,19 @@ def process_statement(statement):
                 tree = parse(dico,tokens)
                 
                 # semantic analysis
-                formula = evaluation.evaluate(tree) 
+                try:
+                    formula = evaluation.evaluate(tree) 
+                    # printing result
+                    print('|SUCCESS| '+pure_statement+'\n\t'+formula+'\n')
+                    return formula
+                except:
+                    print(" |ERROR| Pattern statement is not recognized for :\n\t"+pure_statement)
+                
 
-                # printing result
-                print(pure_statement+'\n'+formula+'\n')
+                
+                
 
-                return formula
+                
 
 def process_file(filename):
     """ 
@@ -255,15 +264,19 @@ def process_file(filename):
     """
     if os.path.isfile(filename):
         contents = Path(filename).read_text()
-        statements = contents.split(';')
-        print("\n")
+        statements = re.split(';\n*',contents)
         myfile = open("translation_"+filename,'w')
         formula = ''
 
         for statement in statements:
-            formula += process_statement(statement)+"\n"
+            try:
+                translation = process_statement(statement)
+                formula+= 'STATEMENT : '+statement
+                formula += 'RESULT : '+translation+'\n\n'
+            except:
+                formula+='\nERROR'
 
-        myfile.write(formula+'\n')
+        myfile.write(formula)
         myfile.close()
     else:
         print("Le fichier ",filename," n'existe pas")
@@ -273,14 +286,18 @@ def process_file(filename):
 def main(argv):
     #read set of examples
     if len(argv) == 1:
-        process_file("exemple.txt")   
+        try:
+            statement = input(" Write a statement\n ")
+            process_statement(statement)
+        except KeyboardInterrupt:
+            print("User interruption")  
     elif len(argv) == 3:
         if argv[1] == '-f':
             process_file(argv[2])
         elif argv[1] == '-s':
             process_statement(argv[2])
     else:
-        print("erreur saisie commande")
+        print("erreur")
 
 
 

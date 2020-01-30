@@ -148,20 +148,22 @@ def evaluate(tree):
 
     #current_node_label = tree.label()
     # begin the evaluation of all children from left to right (it is the right order)
+    res_set = False
     while i < children_size:
         # get the i-th child's label
         child_label = tree[i].label() 
 
-        # test
-        # print(child_label)
-
         # match the label an existing TOKEN or it doesn't exist
         if child_label == 'COND':
-            logic_formula += evaluate_cond(tree[i])
+            if res_set:
+                logic_formula = evaluate_cond(tree[i])+logic_formula
+            else:
+                logic_formula += evaluate_cond(tree[i])
         elif child_label == 'COMMA':
             pass
         elif child_label == 'RES':
             logic_formula += evaluate_res(tree[i])
+            res_set = True
         elif child_label == 'ACTION':
             logic_formula += evaluate_action(tree[i])
         else :
