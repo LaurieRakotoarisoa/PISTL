@@ -1,0 +1,123 @@
+STATEMENT : CLOCK is less than STATE-1.
+RESULT : CLOCK < STATE-1
+
+STATEMENT : VAR is greater than MIN.
+RESULT : VAR > MIN
+
+STATEMENT : REACT and STOP .
+RESULT : REACT && STOP
+
+STATEMENT : DEADLOCK is false.
+RESULT : !(DEADLOCK)
+
+STATEMENT : DEADLOCK does not hold.
+RESULT : !(DEADLOCK)
+
+STATEMENT : STATUS equals ACTIVE.
+RESULT : STATUS = ACTIVE
+
+STATEMENT : STATUS is equal to ACTIVE.
+RESULT : STATUS  = ACTIVE
+
+STATEMENT : VAR is not equal to 13.
+RESULT : !(VAR  =13)
+
+STATEMENT : PHI and PSY.
+RESULT : PHI && PSY
+
+STATEMENT : PHI or PSY.
+RESULT : PHI || PSY
+
+STATEMENT : PSY whenever PHI.
+RESULT : AG( PHI -> PSY )
+
+STATEMENT : PSY if PHI.
+RESULT : AG( PHI -> PSY )
+
+STATEMENT : STATUS always equals 3.
+RESULT : AG(STATUS = 3)
+
+STATEMENT : ACTIVE eventually holds.
+RESULT : F(ACTIVE)
+
+STATEMENT : STATE is ultimately 0 .
+RESULT : F(STATE=0)
+
+STATEMENT : ACTIVE holds ultimately.
+RESULT : F(ACTIVE)
+
+STATEMENT : STATE is 20 until LIVE .
+RESULT : STATE.20 U LIVE
+
+STATEMENT : LIVE next.
+RESULT : X(LIVE )
+
+STATEMENT : PSY if PHI is greater than MIN and PHI equals ACTIVE
+RESULT : AG( PHI > MIN && PHI = ACTIVE -> PSY )
+
+STATEMENT : STATUS is always equal to STATE.
+RESULT : AG(STATUS  = STATE)
+
+STATEMENT : ACTIVE always holds.
+RESULT : AG(ACTIVE)
+
+STATEMENT : PHI or PSY until STATUS is greater than MIN.
+RESULT : PHI || PSY U STATUS > MIN
+
+STATEMENT : PSY and PHI next .
+RESULT : X(PSY && PHI )
+
+STATEMENT : DEADLOCK never holds.
+RESULT : AG(!(DEADLOCK))
+
+STATEMENT : PSY whenever PHI holds.
+RESULT : AG( PHI -> PSY )
+
+STATEMENT : CLOCK next whenever ACTIVE.
+RESULT : AG( ACTIVE -> X(CLOCK  ))
+
+STATEMENT : When an error message is displayed or the message is on screen, the only available user action is acknowledgement via the 'ok' button
+RESULT : AG(errormessage.displayed || message.screen ->onlyavailableuseraction acknowledgementokbutton)
+
+STATEMENT : When the cancel button on the identify traveler screen is pressed, control returns to the main menu screen
+RESULT : AG(cancelbuttonidentifytravelerscreen.pressed ->controlreturns.mainmenuscreen)
+
+STATEMENT : When a match is found, all fields are filled in
+RESULT : AG(match.found ->A(fields.arefilled))
+
+STATEMENT : When a connection is made to the POP server, mail will be transferred to the local machine
+RESULT : AG(connection.made.POPserver ->mail.transferred.localmachine)
+
+STATEMENT : When the name of a mailbox is double-clicked, that mailbox will be opened.
+RESULT : AG(namemailbox.double-clicked ->mailbox.opened)
+
+STATEMENT : When a connection is not made to the server, report an error and reset network component to initial state.
+RESULT : AG(!(connection.made.server) ->.reporterror &&resetnetworkcomponent.initialstate)
+
+STATEMENT :  
+When STATE is  20, ACTIVE holds ultimately.
+RESULT : AG(STATE=20 ->F(ACTIVE))
+
+STATEMENT : When STATE is not  eventually 20, ACTIVE holds ultimately.
+RESULT : AG(!(F(STATE=20)) ->F(ACTIVE))
+
+STATEMENT : when PSY is 4 do GEARS_EXTENDED shall be true within 2 s
+RESULT : PSY=4 ->F{2}(GEARS_EXTENDED)
+
+STATEMENT : when STATE+1 is more than 5 do DOORS_CLOSED
+RESULT : STATE+1 > 5 ->F{infinity}(DOORS_CLOSED)
+
+STATEMENT : when STATE+1 is more than 5 do DOORS_CLOSED within 10 seconds
+RESULT : STATE+1 > 5 ->F{10}(DOORS_CLOSED)
+
+STATEMENT : when LG_CMD is DOWN do GEARS_RETRACTED shall be true and DOORS_CLOSED shall be true within 15 seconds
+RESULT : LG_CMD=DOWN ->F{15}(GEARS_RETRACTED && DOORS_CLOSED)
+
+STATEMENT : when LG_CMD is DOWN do GEARS_RETRACTED shall be true and DOORS_CLOSED shall be true within 15 seconds afterwards GEARS_RETRACTED
+RESULT : LG_CMD.DOWN ->F{15}(GEARS_RETRACTED && DOORS_CLOSED && G{infinity}(GEARS_RETRACTED))
+
+STATEMENT : when LG_CMD is UP do GEARS_RETRACTED shall be true within 12 seconds afterwards GEARS_RETRACTED shall be true
+RESULT : LG_CMD.UP ->F{12}(GEARS_RETRACTED && G{infinity}(GEARS_RETRACTED))
+
+STATEMENT : do DOORS_CLOSED when STATE+1 is more than 5RESULT : AG(STATE+1 > 5 -> F{infinity}(DOORS_CLOSED))
+

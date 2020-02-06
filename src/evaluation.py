@@ -2,6 +2,11 @@ import nltk
 import sys
 from nltk.tree import *
 
+"""
+
+Module for evaluating a parse tree 
+
+"""
 
 #global variable 
 
@@ -64,6 +69,15 @@ all_arr = ['all','every']
 
 
 def apply_temporal_logic(formula):
+    """
+       Add temporal logic to a given formula according to boolean values which check if an 
+       operator was present in the statement
+        
+    Parameters
+    ----------
+        statement : formula -> logic formula
+    """
+
     global if_unary
     if if_unary == True:
         tmp1 = formula.split("->")[0]
@@ -79,19 +93,21 @@ def apply_temporal_logic(formula):
         formula = "AG("+formula+")"
         always = False
 
-    global f
-    if f == True:
-        formula = "F("+formula+")"
-        f = False
+    formula = apply_finally(formula)
 
-    global x 
-    if x == True:
-        formula = "X("+formula+")"
-        x= False
+    formula = apply_next(formula)
 
     return formula
 
 def apply_next(formula):
+    """
+       Add X operator to a given formula according to its boolean values which check if X
+        was present in the statement
+        
+    Parameters
+    ----------
+        statement : formula -> logic formula
+    """
     global x 
     if x == True:
         formula = "X("+formula+")"
@@ -99,6 +115,14 @@ def apply_next(formula):
     return formula
 
 def apply_finally(formula):
+    """
+       Add F operator to a given formula according to its boolean values which check if F
+        was present in the statement
+        
+    Parameters
+    ----------
+        statement : formula -> logic formula
+    """
     global f
     if f == True:
         formula = "F("+formula+")"
@@ -106,6 +130,14 @@ def apply_finally(formula):
     return formula
 
 def apply_do(formula):
+    """
+       Add F{...}(...) operator to a given formula according to its boolean values which check if a 
+       DO...WHEN was present in the statement
+        
+    Parameters
+    ----------
+        statement : formula -> logic formula
+    """
     global do_exist
     global within
     global within_value
@@ -118,6 +150,14 @@ def apply_do(formula):
     return formula
 
 def apply_negation(formula):
+    """
+       Add ! operator to a given formula according to its boolean values which check if a negation
+        was present in the statement
+        
+    Parameters
+    ----------
+        statement : formula -> logic formula
+    """
     global negation
     if negation == True:
         formula = "!("+formula+")"
@@ -125,6 +165,14 @@ def apply_negation(formula):
     return formula
 
 def apply_afterwards(formula):
+    """
+       Add G{...}(...) operator to a given formula according to its boolean values which check if the key word afterwards
+        was present in the statement
+        
+    Parameters
+    ----------
+        statement : formula -> logic formula
+    """
     global afterwards
     global afterwards_value
     if afterwards == True:
@@ -135,8 +183,14 @@ def apply_afterwards(formula):
 
 
 
-# Evaluate from S (<-> Start) Node
 def evaluate(tree):
+    """
+    Evaluate a tree from its starting node : S, and convert it into a temporal logic formula  
+        
+    Parameters
+    ----------
+        tree -> nltk.tree
+    """
     # the to-be result   
     logic_formula = ""
 
@@ -188,7 +242,13 @@ def evaluate(tree):
     
 # Evaluate from COND(<-> Condition) Node
 def evaluate_cond(tree):
-
+    """
+    Evaluate a tree from its condition node : COND, and convert it into a temporal logic formula  
+        
+    Parameters
+    ----------
+        tree -> nltk.tree
+    """
     global conditionExists
     global do_exist
     global always
@@ -226,6 +286,13 @@ def evaluate_cond(tree):
 
 # Evaluate from RES(<-> Condition) Node
 def evaluate_res(tree):
+    """
+    Evaluate a tree from its result node : RES, and convert it into a temporal logic formula  
+        
+    Parameters
+    ----------
+        tree -> nltk.tree
+    """
     res = ""
     i = 0  
     children_size = len(tree)
@@ -274,6 +341,13 @@ def evaluate_res(tree):
         return res
 
 def evaluate_action(tree):
+    """
+    Evaluate a tree from its action node : ACTION, and convert it into a temporal logic formula  
+        
+    Parameters
+    ----------
+        tree -> nltk.tree
+    """
     action = ""
     i = 0  
     children_size = len(tree)
@@ -314,6 +388,14 @@ def evaluate_action(tree):
     return action
 
 def evaluate_op_l(tree):
+    """
+    Evaluate a tree from its logic operator node : OP_L, and convert it into a temporal logic formula  
+        
+    Parameters
+    ----------
+        tree -> nltk.tree
+    """
+
     op = ""
     i = 0
     global always
@@ -345,8 +427,15 @@ def evaluate_op_l(tree):
         i = i+1
     return op
 
-# séparer avec des '_' ou '.'
 def evaluate_np(tree):
+    """
+    Evaluate a tree from its noun node : NP, and convert it into a temporal logic formula  
+        
+    Parameters
+    ----------
+        tree -> nltk.tree
+    """
+
     np = ""
     i = 0  
     children_size = len(tree)
@@ -379,6 +468,14 @@ def evaluate_np(tree):
     return np
 
 def evaluate_vp(tree):
+    """
+    Evaluate a tree from its verb node : VP, and convert it into a temporal logic formula  
+        
+    Parameters
+    ----------
+        tree -> nltk.tree
+    """
+    
     vp = ""
     i = 0  
     children_size = len(tree)
@@ -413,6 +510,15 @@ def evaluate_vp(tree):
     return vp
 
 def evaluate_noms(tree):
+    """
+    Evaluate a tree from its noms node : NOMS, and convert it into a temporal logic formula  
+        
+    Parameters
+    ----------
+        tree -> nltk.tree
+    
+    """
+ 
     noms = ""
     i = 0  
     children_size = len(tree)
@@ -432,6 +538,13 @@ def evaluate_noms(tree):
     return noms
 
 def evaluate_nom(tree):
+    """
+    Evaluate a tree from node NOM, and convert it into a temporal logic formula  
+        
+    Parameters
+    ----------
+        tree -> nltk.tree
+    """
     nom = ""
     i = 0  
     children_size = len(tree)
@@ -455,6 +568,13 @@ def evaluate_nom(tree):
     return nom
 
 def evaluate_verb(tree):
+    """
+    Evaluate a tree from node VERB, and convert it into a temporal logic formula  
+        
+    Parameters
+    ----------
+        tree -> nltk.tree
+    """
     verb = ""
     i = 0  
     global is_equal
@@ -512,6 +632,13 @@ def evaluate_verb(tree):
     return verb
 
 def evaluate_adverbs(tree):
+    """
+    Evaluate a tree from node ADVERBS and convert it into a temporal logic formula  
+        
+    Parameters
+    ----------
+        tree -> nltk.tree
+    """
     adv = ""
     i = 0  
     global always
@@ -541,6 +668,13 @@ def evaluate_adverbs(tree):
     return adv
 
 def evaluate_co(tree):
+    """
+    Evaluate a tree from node CO (objet complement) and convert it into a temporal logic formula  
+        
+    Parameters
+    ----------
+        tree -> nltk.tree
+    """
     co = ""
     i = 0  
     children_size = len(tree)
@@ -557,6 +691,13 @@ def evaluate_co(tree):
     return co
 
 def evaluate_cod(tree):
+    """
+    Evaluate a tree from node COD (direct object complement) and convert it into a temporal logic formula  
+        
+    Parameters
+    ----------
+        tree -> nltk.tree
+    """
     cod = ""
     i = 0  
     children_size = len(tree)
@@ -584,6 +725,13 @@ def evaluate_cod(tree):
     return cod
 
 def evaluate_adjectives(tree):
+    """
+    Evaluate a tree from node ADJECTIVES and convert it into a temporal logic formula  
+        
+    Parameters
+    ----------
+        tree -> nltk.tree
+    """
     adj = ""
     i = 0  
     global is_equal
@@ -621,6 +769,13 @@ def evaluate_adjectives(tree):
     return adj
 
 def evaluate_pp(tree):
+    """
+    Evaluate a tree from node PP (prepositional pronouns) and convert it into a temporal logic formula  
+        
+    Parameters
+    ----------
+        tree -> nltk.tree
+    """
     pp = ""
     i = 0  
     children_size = len(tree)
@@ -641,6 +796,13 @@ def evaluate_pp(tree):
 
 
 def evaluate_p(tree):
+    """
+    Evaluate a tree from node P (preposition) and convert it into a temporal logic formula  
+        
+    Parameters
+    ----------
+        tree -> nltk.tree
+    """
     p = ""
     i = 0  
     children_size = len(tree)
@@ -662,6 +824,13 @@ def evaluate_p(tree):
 
 
 def evaluate_mc(tree):
+    """
+    Evaluate a tree from node MC (composed words separated with an hyphen) and convert it into a temporal logic formula  
+        
+    Parameters
+    ----------
+        tree -> nltk.tree
+    """
     mc = ""
     i = 0  
     children_size = len(tree)
@@ -685,6 +854,13 @@ def evaluate_mc(tree):
     return mc
 
 def evaluate_comp(tree):
+    """
+    Evaluate a tree from node COMP (comparator keywords) and convert it into a temporal logic formula  
+        
+    Parameters
+    ----------
+        tree -> nltk.tree
+    """
     comp = ""
     i = 0  
     children_size = len(tree)
@@ -710,6 +886,13 @@ def evaluate_comp(tree):
 
 
 def evaluate_time(tree):
+    """
+    Evaluate a tree from node TIME (nouns that indicate time) and convert it into a temporal logic formula  
+        
+    Parameters
+    ----------
+        tree -> nltk.tree
+    """
     i = 0  
     children_size = len(tree)
     while i < children_size:
@@ -728,6 +911,13 @@ def evaluate_time(tree):
         i = i+1
 
 def evaluate_after(tree):
+    """
+    Evaluate a tree from node AFTER (afterwards keywords) and convert it into a temporal logic formula  
+        
+    Parameters
+    ----------
+        tree -> nltk.tree
+    """
     after = ""
     i = 0  
     children_size = len(tree)

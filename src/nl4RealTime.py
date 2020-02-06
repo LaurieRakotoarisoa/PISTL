@@ -1,3 +1,8 @@
+"""
+
+Module for translating a statement in pseudo-language to a temporal logic statement
+
+"""
 import nltk
 import sys
 import evaluation
@@ -88,7 +93,6 @@ def negation(statement):
     s = ""
     for w in new_list:
         s+= w+" "
-
     return s
 
 def tokenize(statement):
