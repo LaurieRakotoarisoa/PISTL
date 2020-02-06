@@ -1,12 +1,12 @@
+"""
+Module for evaluating the parse tree
+
+"""
+
 import nltk
 import sys
 from nltk.tree import *
 
-"""
-
-Module for evaluating a parse tree 
-
-"""
 
 #global variable 
 
@@ -233,6 +233,8 @@ def evaluate(tree):
     isDoWhen = False
 
     # if we found any temporal logics keywords then we have to add them to the formula
+    global always
+    print(always)
     logic_formula = apply_temporal_logic(logic_formula)
 
     logic_formula = logic_formula.replace(' .','')
@@ -268,7 +270,6 @@ def evaluate_cond(tree):
         elif child_label == 'DO':
             isDoWhen = True
             do_exist = True
-            always = False
         elif child_label == 'ACTION':
             cond += evaluate_action(tree[i])
             cond = apply_next(cond)
@@ -309,7 +310,6 @@ def evaluate_res(tree):
             pass
         elif child_label == 'DO' :
             do_exist = True
-            always = False
         elif child_label == 'WITHIN' :
             global within
             within = True
@@ -539,7 +539,7 @@ def evaluate_noms(tree):
 
 def evaluate_nom(tree):
     """
-    Evaluate a tree from node NOM, and convert it into a temporal logic formula  
+      Evaluate a tree from node NOM, and convert it into a temporal logic formula  
         
     Parameters
     ----------
@@ -569,7 +569,7 @@ def evaluate_nom(tree):
 
 def evaluate_verb(tree):
     """
-    Evaluate a tree from node VERB, and convert it into a temporal logic formula  
+      Evaluate a tree from node VERB, and convert it into a temporal logic formula  
         
     Parameters
     ----------
@@ -633,7 +633,7 @@ def evaluate_verb(tree):
 
 def evaluate_adverbs(tree):
     """
-    Evaluate a tree from node ADVERBS and convert it into a temporal logic formula  
+      Evaluate a tree from node ADVERBS and convert it into a temporal logic formula  
         
     Parameters
     ----------
@@ -669,7 +669,7 @@ def evaluate_adverbs(tree):
 
 def evaluate_co(tree):
     """
-    Evaluate a tree from node CO (objet complement) and convert it into a temporal logic formula  
+       Evaluate a tree from node CO (objet complement) and convert it into a temporal logic formula  
         
     Parameters
     ----------
@@ -692,7 +692,7 @@ def evaluate_co(tree):
 
 def evaluate_cod(tree):
     """
-    Evaluate a tree from node COD (direct object complement) and convert it into a temporal logic formula  
+      Evaluate a tree from node COD (direct object complement) and convert it into a temporal logic formula  
         
     Parameters
     ----------
@@ -726,7 +726,7 @@ def evaluate_cod(tree):
 
 def evaluate_adjectives(tree):
     """
-    Evaluate a tree from node ADJECTIVES and convert it into a temporal logic formula  
+       Evaluate a tree from node ADJECTIVES and convert it into a temporal logic formula  
         
     Parameters
     ----------
@@ -770,7 +770,7 @@ def evaluate_adjectives(tree):
 
 def evaluate_pp(tree):
     """
-    Evaluate a tree from node PP (prepositional pronouns) and convert it into a temporal logic formula  
+         Evaluate a tree from node PP (prepositional pronouns) and convert it into a temporal logic formula  
         
     Parameters
     ----------
@@ -797,7 +797,7 @@ def evaluate_pp(tree):
 
 def evaluate_p(tree):
     """
-    Evaluate a tree from node P (preposition) and convert it into a temporal logic formula  
+        Evaluate a tree from node P (preposition) and convert it into a temporal logic formula  
         
     Parameters
     ----------
